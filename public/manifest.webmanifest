@@ -1,0 +1,19 @@
+{
+  "name": "Choir Training App",
+  "short_name": "ChoirTrain",
+  "description": "Practice choir parts, manage credits, and train with guided audio.",
+  "start_url": "/home",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f8fafc",
+  "theme_color": "#6d28d9",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

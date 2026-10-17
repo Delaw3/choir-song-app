@@ -1,0 +1,29 @@
+rules_version = '2';
+
+// Choir Song App — PRE-AUTHENTICATION lockdown rules.
+//
+// Everything is DENY by default. No public reads, no public writes.
+// These rules intentionally block production use until Firebase
+// Authentication + admin custom claims are integrated (next task).
+// Emulator / local development may use a separate permissive ruleset,
+// never deploy one to production.
+//
+// Summary:
+// - songs / songCategories / creditPackages: reads/writes denied until auth.
+//   After auth: public-catalog reads allowed, writes admin-only via claims.
+// - songParts: denied (audio metadata; signed-URL flow comes with backend).
+// - users / userLibraries / partUnlocks / practiceProgress /
+//   creditTransactions / payments / notificationReads: denied.
+// - complaints: pre-auth creation is intentionally NOT enabled here.
+//   Enable the documented limited-create rule only after adding App Check +
+//   rate limits, or keep creation behind the trusted backend.
+// - notifications: denied until auth.
+// - appSettings: denied (client reads this only after auth via backend config).
+//
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
