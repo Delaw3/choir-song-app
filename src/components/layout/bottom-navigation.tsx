@@ -2,15 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Library, Music2, User, WalletCards } from "lucide-react";
+import { Home, Library, Music2, Users, WalletCards } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { label: "Home", href: "/home", icon: Home },
+  { label: "Rooms", href: "/rooms", icon: Users },
   { label: "Songs", href: "/songs", icon: Music2 },
   { label: "Library", href: "/library", icon: Library },
   { label: "Wallet", href: "/wallet", icon: WalletCards },
-  { label: "Profile", href: "/profile", icon: User },
 ];
 
 export function BottomNavigation() {
@@ -22,6 +22,7 @@ export function BottomNavigation() {
         {navItems.map((item) => {
           const isActive = pathname === item.href || (item.href !== "/home" && pathname.startsWith(item.href));
           const Icon = item.icon;
+          const isSongs = item.href === "/songs";
 
           return (
             <Link
@@ -29,10 +30,14 @@ export function BottomNavigation() {
               href={item.href}
               className={cn(
                 "flex min-h-14 flex-col items-center justify-center gap-1 rounded-2xl text-[11px] font-semibold transition",
-                isActive ? "bg-violet-100 text-violet-800" : "text-slate-500 hover:bg-slate-100",
+                isActive
+                  ? "bg-violet-100 text-violet-800"
+                  : isSongs
+                  ? "text-slate-500 hover:bg-slate-100 hover:text-violet-800"
+                  : "text-slate-500 hover:bg-slate-100",
               )}
             >
-              <Icon className="size-5" />
+              <Icon className={cn("size-5", isSongs && "text-violet-800")} />
               <span>{item.label}</span>
             </Link>
           );

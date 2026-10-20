@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Bell, Search } from "lucide-react";
+import { Bell, Search, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CreditBadge } from "@/components/ui/credit-badge";
 import { SongCard } from "@/components/songs/song-card";
@@ -13,14 +13,19 @@ export default function HomePage() {
 
   return (
     <div className="space-y-6">
-      <header className="flex items-center justify-between">
-        <div>
+      <header className="flex items-center justify-between gap-2">
+        <div className="min-w-0">
           <p className="text-sm font-semibold text-slate-500">Hello, {member.name.split(" ")[0]}</p>
-          <h1 className="mt-1 text-3xl font-black tracking-tight text-slate-950">Ready to practice?</h1>
+          <h1 className="mt-1 text-2xl font-black tracking-tight text-slate-950">Ready to practice?</h1>
         </div>
-        <Link href="/notifications" className="flex size-11 items-center justify-center rounded-2xl bg-white text-slate-700 shadow-sm">
-          <Bell className="size-5" />
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link href="/notifications" className="flex size-10 items-center justify-center rounded-2xl bg-white text-slate-700 shadow-sm">
+            <Bell className="size-5" />
+          </Link>
+          <Link href="/profile" className="flex size-10 items-center justify-center rounded-2xl bg-white text-slate-700 shadow-sm">
+            <User className="size-5" />
+          </Link>
+        </div>
       </header>
 
       <section className="rounded-[2rem] bg-violet-700 p-5 text-white shadow-xl shadow-violet-700/20">

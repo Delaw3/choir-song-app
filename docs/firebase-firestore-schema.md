@@ -205,6 +205,22 @@ kobo); mappers convert to naira for the existing `CreditPackage.price` UI.
 All lists paginate (`limit` + cursors). No real-time listeners — one-shot
 queries match every current screen.
 
+### `practiceRooms` — auto-ID (mock-first; backend later)
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| `name` | string | yes | e.g. “Bella Voce Choir” |
+| `code` | string | yes | short join code, e.g. `BELL-AV03`; unique |
+| `description` | string | no | |
+| `ownerId` | string | yes | Auth UID of the creator; **only owner edits setlist** |
+| `ownerName` | string | yes | display cache |
+| `createdAt` / `updatedAt` | Timestamp | yes | |
+
+Subcollections mirror `src/types/room.ts`:
+- `practiceRooms/{roomId}/members/{userId}` — `{ name, voicePart, joinedAt }`
+- `practiceRooms/{roomId}/sections/{sectionId}` — `{ title, sortOrder }` (default: Entrance, Offertory, Communion, Recessional)
+- `practiceRooms/{roomId}/songs/{itemId}` — `{ songId, sectionId, voicePart, note?, addedAt }`
+- `voicePart` is a free-form label (`All voices`, `Soprano 1`, …) chosen by the owner at add-time; songs come from the published catalog only.
+
 ### `appSettings/app` (single doc)
 Only genuine app-wide settings: `supportedVoiceParts`
 
