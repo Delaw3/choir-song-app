@@ -163,18 +163,23 @@ export const roomsService = {
     return clone(room);
   },
 
-  /** Owner-only: add a catalog song to a section with a named voice part. */
-  addSong(roomId: string, songId: string, sectionId: string, voicePart: string, note: string | undefined, userId: string): PracticeRoom {
+  /** Owner-only: add a catalog song to a section. Section is resolved by title (created if missing). Voice part is optional. */
+  addSong(roomId: string, songId: string, sectionTitle: string, voicePart: string = "", note: string | undefined, userId: string): PracticeRoom {
     const room = findById(roomId);
     assertOwner(room, userId);
-    if (!room.sections.some((s) => s.id === sectionId)) throw new Error("Pick a section first.");
+    const cleanTitle = sectionTitle.trim();
+    if (!cleanTitle) throw new Error("Give the section a title (e.g. Entrance).");
+    let section = room.sections.find((s) => s.title.toLowerCase() === cleanTitle.toLowerCase());
+    if (!section) {
+      section = { id: makeId("sec"), title: cleanTitle, sortOrder: room.sections.length };
+      room.sections = [...room.sections, section];
+    }
     const part = voicePart.trim();
-    if (!part) throw new Error("Name the part (e.g. Soprano 1 or All voices).");
     const dupe = room.items.some(
-      (i) => i.songId === songId && i.sectionId === sectionId && i.voicePart.toLowerCase() === part.toLowerCase(),
+      (i) => i.songId === songId && i.sectionId === section.id && i.voicePart.toLowerCase() === part.toLowerCase(),
     );
-    if (dupe) throw new Error("That song + part is already in this section.");
-    room.items = [...room.items, { id: makeId("item"), songId, sectionId, voicePart: part, note: note?.trim() || undefined, addedAt: nowIso() }];
+    if (dupe) throw new Error("That song is already in this section.");
+    room.items = [...room.items, { id: makeId("item"), songId, sectionId: section.id, voicePart: part, note: note?.trim() || undefined, addedAt: nowIso() }];
     return clone(room);
   },
 

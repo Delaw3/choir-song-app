@@ -15,11 +15,9 @@ import { useMemo } from "react";
 export function RoomSetlist({ roomId, userId }: { roomId: string; userId: string }) {
   const [version, bump] = useRoomsVersion();
   const room = useMemo(() => roomsService.getById(roomId), [roomId, version]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedSongId, setSelectedSongId] = useState<string | null>(null);
   const [sectionTitle, setSectionTitle] = useState("");
-  const [songId, setSongId] = useState("");
-  const [sectionId, setSectionId] = useState("");
-  const [voicePart, setVoicePart] = useState("All voices");
-  const [customPart, setCustomPart] = useState("");
   const [error, setError] = useState("");
   const [showAdd, setShowAdd] = useState(false);
 
@@ -28,7 +26,6 @@ export function RoomSetlist({ roomId, userId }: { roomId: string; userId: string
 
   if (!room) return null;
   const owner = roomsService.isOwner(room, userId);
-  const partLabel = voicePart === "Custom…" ? customPart : voicePart;
 
   function mutate(fn: () => void) {
     setError("");
@@ -41,16 +38,17 @@ export function RoomSetlist({ roomId, userId }: { roomId: string; userId: string
   }
 
   function addSong() {
-    if (!songId || !sectionId) {
-      setError("Pick a song and a section.");
+    if (!selectedSongId || !sectionTitle.trim()) {
+      setError("Choose a song and a section.");
       return;
     }
     const current = roomsService.getById(roomId);
     if (!current) return;
     mutate(() => {
-      roomsService.addSong(current.id, songId, sectionId, partLabel, undefined, userId);
-      setSongId("");
-      setCustomPart("");
+      roomsService.addSong(current.id, selectedSongId, sectionTitle, "", undefined, userId);
+      setSelectedSongId(null);
+      setSectionTitle("");
+      setSearchQuery("");
       setShowAdd(false);
     });
   }
@@ -70,14 +68,12 @@ export function RoomSetlist({ roomId, userId }: { roomId: string; userId: string
         <AddSongForm
           catalog={catalog}
           sections={room.sections}
-          songId={songId}
-          sectionId={sectionId}
-          voicePart={voicePart}
-          customPart={customPart}
-          onSong={setSongId}
-          onSection={setSectionId}
-          onPart={setVoicePart}
-          onCustom={setCustomPart}
+          searchQuery={searchQuery}
+          selectedSongId={selectedSongId}
+          sectionTitle={sectionTitle}
+          onSearch={setSearchQuery}
+          onSelectSong={setSelectedSongId}
+          onSection={setSectionTitle}
           onAdd={addSong}
         />
       ) : null}
@@ -103,7 +99,7 @@ export function RoomSetlist({ roomId, userId }: { roomId: string; userId: string
                         <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-violet-700"><Music2 className="size-4" /></span>
                         <div className="min-w-0 flex-1">
                           <p className="truncate text-sm font-bold text-slate-900">{song?.title ?? item.songId}</p>
-                          <p className="truncate text-xs text-slate-500">{item.voicePart}{song ? ` · ${song.composer}` : ""}</p>
+                          {song ? <p className="truncate text-xs text-slate-500">{song.composer}</p> : null}
                         </div>
                         {song ? <Link href={`/songs/${song.id}`} className="shrink-0 text-xs font-bold text-violet-700">Practice</Link> : null}
                         {owner ? (
