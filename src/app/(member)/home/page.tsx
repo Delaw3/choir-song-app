@@ -28,12 +28,13 @@ export default function HomePage() {
         </div>
       </header>
 
-      <section className="rounded-[2rem] bg-violet-700 p-5 text-white shadow-xl shadow-violet-700/20">
-        <p className="text-sm font-semibold text-violet-100">Current balance</p>
+      <section className="relative rounded-[2rem] bg-gradient-to-br from-violet-50/55 via-white/45 to-violet-100/55 backdrop-blur-md border border-violet-200/60 p-5 shadow-[0_8px_32px_rgba(109,40,217,0.12)] overflow-hidden">
+        <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 opacity-70 pointer-events-none" />
+        <p className="relative z-10 text-sm font-semibold text-violet-700">Current balance</p>
         <div className="mt-2 flex items-end justify-between gap-4">
           <div>
-            <p className="text-4xl font-black">{member.creditBalance}</p>
-            <p className="text-sm font-semibold text-violet-100">training credits</p>
+            <p className="relative z-10 text-4xl font-black text-violet-900">{member.creditBalance}</p>
+            <p className="relative z-10 text-sm font-semibold text-violet-700">training credits</p>
           </div>
           <Link href="/wallet/buy">
             <Button variant="secondary" size="sm">Buy Credits</Button>
