@@ -14,10 +14,9 @@ export default function WalletPage() {
         <p className="text-sm font-semibold text-violet-700">Credits</p>
         <h1 className="mt-1 text-3xl font-black tracking-tight text-slate-950">Wallet</h1>
       </header>
-      <section className="relative rounded-[2rem] bg-gradient-to-br from-violet-50/55 via-white/45 to-violet-100/55 backdrop-blur-md border border-violet-200/60 p-5 shadow-[0_8px_32px_rgba(109,40,217,0.12)] overflow-hidden">
-        <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 opacity-70 pointer-events-none" />
-        <p className="relative z-10 text-sm font-semibold text-violet-700">Available balance</p>
-        <p className="relative z-10 mt-2 text-5xl font-black text-violet-900">{member.creditBalance}</p>
+      <section className="rounded-[2rem] bg-slate-950 p-5 text-white shadow-xl">
+        <p className="text-sm font-semibold text-slate-300">Available balance</p>
+        <p className="mt-2 text-5xl font-black">{member.creditBalance}</p>
         <Link href="/wallet/buy" className="mt-5 block">
           <Button className="w-full" variant="secondary">Buy credits</Button>
         </Link>
