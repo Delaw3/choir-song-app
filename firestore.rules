@@ -1,29 +1,137 @@
 rules_version = '2';
 
-// Choir Song App — PRE-AUTHENTICATION lockdown rules.
+// Choir Song App — AUTHENTICATED rules (Google sign-in live).
 //
-// Everything is DENY by default. No public reads, no public writes.
-// These rules intentionally block production use until Firebase
-// Authentication + admin custom claims are integrated (next task).
-// Emulator / local development may use a separate permissive ruleset,
-// never deploy one to production.
+// Posture:
+// - Public catalog (songs / songCategories / creditPackages / notifications):
+//   any SIGNED-IN user may read published/active docs. Anonymous reads denied.
+// - User-scoped collections: owner-only via `request.auth.uid`.
+// - Ledger / payments: owner reads, NO client writes (backend-only).
+// - Catalog / notification writes: `request.auth.token.admin == true` only.
+//   The backend sets this custom claim for allow-listed admins
+//   (POST /api/auth/google).
+// - Everything else: deny.
 //
-// Summary:
-// - songs / songCategories / creditPackages: reads/writes denied until auth.
-//   After auth: public-catalog reads allowed, writes admin-only via claims.
-// - songParts: denied (audio metadata; signed-URL flow comes with backend).
-// - users / userLibraries / partUnlocks / practiceProgress /
-//   creditTransactions / payments / notificationReads: denied.
-// - complaints: pre-auth creation is intentionally NOT enabled here.
-//   Enable the documented limited-create rule only after adding App Check +
-//   rate limits, or keep creation behind the trusted backend.
-// - notifications: denied until auth.
-// - appSettings: denied (client reads this only after auth via backend config).
-//
+// Client role checks (`AuthBoundary`) remain UI-only; these rules are the real
+// authorization.
+
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn() && request.auth.token.admin == true;
+    }
+
+    function isOwner(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    // ---- Public catalog: signed-in reads of published/active docs ----
+    match /songs/{songId} {
+      allow get, list: if signedIn() && resource.data.status == 'published';
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /songParts/{partId} {
+      allow get, list: if signedIn() && resource.data.status == 'published';
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /songCategories/{slug} {
+      allow get, list: if signedIn() && resource.data.status == 'active';
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /creditPackages/{packageId} {
+      allow get, list: if signedIn() && resource.data.status == 'active';
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /notifications/{notificationId} {
+      allow get, list: if signedIn() && resource.data.published == true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ---- Identity: owner reads own doc; all writes backend-only ----
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if isAdmin();
+      allow create, update, delete: if false;
+    }
+
+    // ---- Owner-scoped user data ----
+    match /userLibraries/{docId} {
+      allow get, list: if signedIn() && resource.data.userId == request.auth.uid;
+      allow create, update: if signedIn()
+        && request.resource.data.userId == request.auth.uid
+        && (resource == null || resource.data.userId == request.auth.uid);
+      allow delete: if signedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    match /partUnlocks/{docId} {
+      allow get, list: if signedIn() && resource.data.userId == request.auth.uid;
+      allow create, update, delete: if false;
+    }
+
+    match /practiceProgress/{docId} {
+      allow get, list: if signedIn() && resource.data.userId == request.auth.uid;
+      allow create, update: if signedIn()
+        && request.resource.data.userId == request.auth.uid
+        && (resource == null || resource.data.userId == request.auth.uid);
+      allow delete: if signedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    match /notificationReads/{docId} {
+      allow get, list: if signedIn() && resource.data.userId == request.auth.uid;
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if signedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // ---- Ledger / payments: owner reads, backend-only writes ----
+    match /creditTransactions/{txnId} {
+      allow get: if signedIn() && resource.data.userId == request.auth.uid;
+      allow list: if isAdmin()
+        || (signedIn() && resource.data.userId == request.auth.uid);
+      allow create, update, delete: if false;
+    }
+
+    match /payments/{paymentId} {
+      allow get: if signedIn() && resource.data.userId == request.auth.uid;
+      allow list: if isAdmin()
+        || (signedIn() && resource.data.userId == request.auth.uid);
+      allow create, update, delete: if false;
+    }
+
+    // ---- Complaints: owner reads, owner creates, admin replies via backend ----
+    match /complaints/{complaintId} {
+      allow get: if signedIn()
+        && (resource.data.userId == request.auth.uid || isAdmin());
+      allow list: if isAdmin()
+        || (signedIn() && request.query.limit <= 50);
+      allow create: if signedIn()
+        && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if false;
+
+      match /replies/{replyId} {
+        allow get, list: if signedIn();
+        allow create, update, delete: if false;
+      }
+    }
+
+    // ---- App settings: signed-in reads, admin writes ----
+    match /appSettings/{docId} {
+      allow get, list: if signedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ---- Default deny ----
     match /{document=**} {
       allow read, write: if false;
     }
   }
 }
+

@@ -6,10 +6,14 @@ import { LoadingState } from "@/components/ui/loading-state";
 import { useAuth } from "@/hooks/use-auth";
 import type { UserRole } from "@/lib/firestore/types";
 
-export function AuthBoundary({ role, children }: { role: UserRole; children: ReactNode }) {
+export function AuthBoundary({ role, children }: { role: UserRole | Array<UserRole>; children: ReactNode }) {
   const router = useRouter();
   const auth = useAuth();
-  const allowed = auth.status === "authenticated" && auth.user?.role === role;
+  const allowedRoles = Array.isArray(role) ? role : [role];
+  const allowed =
+    auth.status === "authenticated" &&
+    auth.user !== null &&
+    allowedRoles.includes(auth.user.role);
 
   useEffect(() => {
     if (auth.status === "loading" || allowed) return;
@@ -23,3 +27,4 @@ export function AuthBoundary({ role, children }: { role: UserRole; children: Rea
 
   return children;
 }
+

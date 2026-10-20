@@ -2,7 +2,6 @@
 
 import { useSyncExternalStore } from "react";
 import { authService } from "@/services/auth.service";
-import type { AuthUser } from "@/types/auth";
 
 export function useAuth() {
   return useSyncExternalStore(authService.subscribe, authService.getState, authService.getServerState);
