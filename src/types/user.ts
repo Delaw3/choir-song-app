@@ -1,10 +1,13 @@
 export type Member = {
   id: string;
   name: string;
+  firstname: string;
   email: string;
   avatarInitials: string;
   creditBalance: number;
   joinedAt: string;
+  status?: "active" | "suspended" | "pending";
+  role?: string;
 };
 
 export type CreditTransaction = {

@@ -14,7 +14,7 @@ import { RoomCard } from "@/components/rooms/room-card";
 export default function RoomsPage() {
   const auth = useAuth();
   const userId = auth.user?.id ?? "member-demo";
-  const displayName = auth.user?.name ?? "Choir Member";
+  const displayName = auth.user?.name ?? "";
   const [version, bump] = useRoomsVersion();
   const rooms = useMemo(() => roomsService.listForUser(userId), [userId, version]);
   const refresh = bump;

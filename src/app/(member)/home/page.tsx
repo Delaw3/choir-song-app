@@ -1,3 +1,4 @@
+'use client';
 import Link from "next/link";
 import { Bell, Search, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -5,9 +6,10 @@ import { CreditBadge } from "@/components/ui/credit-badge";
 import { SongCard } from "@/components/songs/song-card";
 import { songsService } from "@/services/songs.service";
 import { usersService } from "@/services/users.service";
+import { useCurrentMember } from "@/hooks/use-current-member";
 
 export default function HomePage() {
-  const member = usersService.getCurrentMember();
+  const member = useCurrentMember() ?? usersService.getCurrentMember();
   const recent = songsService.getRecentlyPracticed();
   const newSongs = songsService.getNew();
 
@@ -15,7 +17,7 @@ export default function HomePage() {
     <div className="space-y-6">
       <header className="flex items-center justify-between gap-2">
         <div className="min-w-0">
-          <p className="text-sm font-semibold text-slate-500">Hello, {member.name.split(" ")[0]}</p>
+          <p className="text-sm font-semibold text-slate-500">Hello, {member.firstname}</p>
           <h1 className="mt-1 text-2xl font-black tracking-tight text-slate-950">Ready to practice?</h1>
         </div>
         <div className="flex items-center gap-2">
@@ -28,7 +30,7 @@ export default function HomePage() {
         </div>
       </header>
 
-      <section className="rounded-[2rem] bg-violet-700 p-5 text-white shadow-xl shadow-violet-700/20">
+      <section className="rounded-4xl bg-violet-700 p-5 text-white shadow-xl shadow-violet-700/20">
         <p className="text-sm font-semibold text-violet-100">Current balance</p>
         <div className="mt-2 flex items-end justify-between gap-4">
           <div>

@@ -8,6 +8,7 @@ import { ComplaintForm } from "@/components/complaints/complaint-form";
 import { IconButton } from "@/components/ui/icon-button";
 import { complaintsService } from "@/services/complaints.service";
 import { usersService } from "@/services/users.service";
+import { useCurrentMember } from "@/hooks/use-current-member";
 import type { ComplaintCategory } from "@/types/complaint";
 
 export default function NewComplaintPage() {
@@ -15,7 +16,7 @@ export default function NewComplaintPage() {
   const [submitted, setSubmitted] = useState(false);
 
   function submit(values: { category: ComplaintCategory; subject: string; message: string }) {
-    const member = usersService.getCurrentMember();
+    const member = useCurrentMember() ?? usersService.getCurrentMember();
     const complaint = complaintsService.createComplaint({ ...values, userId: member.id, userName: member.name, userEmail: member.email });
     setSubmitted(true);
     window.setTimeout(() => router.push(`/complaints/${complaint.id}`), 650);

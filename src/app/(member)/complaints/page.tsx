@@ -8,10 +8,11 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { IconButton } from "@/components/ui/icon-button";
 import { useComplaints } from "@/hooks/use-complaints";
 import { usersService } from "@/services/users.service";
+import { useCurrentMember } from "@/hooks/use-current-member";
 
 export default function ComplaintsPage() {
   const complaints = useComplaints();
-  const member = usersService.getCurrentMember();
+  const member = useCurrentMember() ?? usersService.getCurrentMember();
   const memberComplaints = complaints.filter((complaint) => complaint.userId === member.id);
 
   return (

@@ -3,13 +3,10 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChevronDown, LoaderCircle } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import { AuthError } from "@/components/auth/auth-feedback";
-import { AuthHeader } from "@/components/auth/auth-header";
 import { PasswordInput } from "@/components/auth/password-input";
 import { SocialLoginButton } from "@/components/auth/social-login-button";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { authService, MockAuthError } from "@/services/auth.service";
 import { cn } from "@/lib/utils";
 
@@ -23,8 +20,6 @@ export default function SignInPage() {
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [authError, setAuthError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showEmail, setShowEmail] = useState(false);
-  const [showDemo, setShowDemo] = useState(false);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -50,50 +45,130 @@ export default function SignInPage() {
     setPassword("Choir123!");
     setErrors({});
     setAuthError("");
-    setShowEmail(true);
   }
 
   return (
-    <div className="flex flex-1 flex-col">
-      <AuthHeader title="Welcome back" description="Pick up where you left off." />
-      <SocialLoginButton />
-      <div className="my-5 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400"><span className="h-px flex-1 bg-slate-200" />or<span className="h-px flex-1 bg-slate-200" /></div>
-      {showEmail ? (
+    <div className="w-full">
+      {/* Centered Minimal Header */}
+      <div className="mb-7 text-center">
+        <h1 className="text-2xl font-black tracking-tight text-slate-950 sm:text-3xl">Welcome back</h1>
+        <p className="mt-1.5 text-sm text-slate-500">Sign in to your account</p>
+      </div>
+
+      <div className="space-y-4">
+        {/* Centered Social Sign In */}
+        <SocialLoginButton label="Continue with Google" />
+
+        {/* Clean Centered Divider */}
+        <div className="relative my-4 flex items-center justify-center">
+          <div className="w-full border-t border-slate-200" />
+          <span className="absolute bg-white px-3 text-xs font-medium text-slate-400">or</span>
+        </div>
+
+        {/* Form */}
         <form onSubmit={submit} className="space-y-4" noValidate>
           {authError ? <AuthError>{authError}</AuthError> : null}
+
           <div>
-            <label className="sr-only" htmlFor="sign-in-email">Email</label>
-            <Input id="sign-in-email" name="email" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "sign-in-email-error" : undefined} placeholder="Email" />
-            {errors.email ? <p id="sign-in-email-error" className="mt-1.5 text-xs font-medium text-rose-600">{errors.email}</p> : null}
+            <label className="mb-1.5 block text-xs font-bold text-slate-700" htmlFor="sign-in-email">
+              Email
+            </label>
+            <input
+              id="sign-in-email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              aria-invalid={Boolean(errors.email)}
+              aria-describedby={errors.email ? "sign-in-email-error" : undefined}
+              className={cn(
+                "min-h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-600 focus:ring-4 focus:ring-violet-500/10",
+                errors.email && "border-rose-400 bg-rose-50/20 focus:border-rose-500",
+              )}
+            />
+            {errors.email ? <p id="sign-in-email-error" className="mt-1.5 text-xs font-semibold text-rose-600">{errors.email}</p> : null}
           </div>
-          <PasswordInput id="sign-in-password" name="password" label="Password" labelClassName="sr-only" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} error={errors.password} placeholder="Password" />
-          <div className="flex items-center justify-between gap-3 text-sm">
-            <label className="flex cursor-pointer items-center gap-2 text-slate-600"><input type="checkbox" checked={rememberMe} onChange={(event) => setRememberMe(event.target.checked)} className="size-4 accent-violet-700" />Remember me</label>
-            <Link href="/forgot-password" className="font-semibold text-violet-700">Forgot password?</Link>
+
+          <div>
+            <div className="mb-1.5 flex items-center justify-between">
+              <label className="text-xs font-bold text-slate-700" htmlFor="sign-in-password">
+                Password
+              </label>
+              <Link href="/forgot-password" className="text-xs font-semibold text-violet-700 hover:underline">
+                Forgot password?
+              </Link>
+            </div>
+            <PasswordInput
+              id="sign-in-password"
+              name="password"
+              label="Password"
+              labelClassName="sr-only"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              error={errors.password}
+              placeholder="Your password"
+            />
           </div>
-          <Button type="submit" size="lg" className="w-full" disabled={loading || !email || !password}>{loading ? <><LoaderCircle className="size-5 animate-spin" />Signing in…</> : "Sign in"}</Button>
+
+          <div className="flex items-center">
+            <label className="flex cursor-pointer select-none items-center gap-2 text-xs font-medium text-slate-600">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="size-4 rounded border-slate-300 accent-violet-600 focus:ring-violet-500"
+              />
+              Remember me
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading || !email || !password}
+            className="flex min-h-12 w-full items-center justify-center rounded-2xl bg-violet-700 px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-violet-800 active:scale-[0.99] disabled:pointer-events-none disabled:opacity-50"
+          >
+            {loading ? (
+              <>
+                <LoaderCircle className="size-4 animate-spin mr-2" />
+                <span>Signing in…</span>
+              </>
+            ) : (
+              "Sign In"
+            )}
+          </button>
         </form>
-      ) : (
-        <Button type="button" variant="secondary" size="lg" className="w-full" onClick={() => setShowEmail(true)}>Sign in with email</Button>
-      )}
-      <div className="mt-4">
-        <button
-          type="button"
-          onClick={() => setShowDemo((value) => !value)}
-          aria-expanded={showDemo}
-          className="inline-flex items-center gap-1 text-xs font-semibold text-slate-400 transition hover:text-slate-600"
-        >
-          Demo access
-          <ChevronDown className={cn("size-3.5 transition-transform", showDemo && "rotate-180")} />
-        </button>
-        {showDemo ? (
-          <div className="mt-2 grid grid-cols-2 gap-2" aria-label="Demo accounts">
-            <Button type="button" variant="ghost" size="sm" onClick={() => fillDemo("member")}>Member demo</Button>
-            <Button type="button" variant="ghost" size="sm" onClick={() => fillDemo("admin")}>Admin demo</Button>
-          </div>
-        ) : null}
+
+        {/* Centered Minimal Demo Access */}
+        <div className="pt-2 text-center text-xs text-slate-400">
+          <span>Demo accounts: </span>
+          <button
+            type="button"
+            onClick={() => fillDemo("member")}
+            className="font-bold text-violet-700 hover:underline"
+          >
+            Member
+          </button>
+          <span className="mx-1.5 text-slate-300">•</span>
+          <button
+            type="button"
+            onClick={() => fillDemo("admin")}
+            className="font-bold text-violet-700 hover:underline"
+          >
+            Admin
+          </button>
+        </div>
+
+        {/* Centered Switch Link */}
+        <p className="pt-2 text-center text-sm text-slate-500">
+          Don&apos;t have an account?{" "}
+          <Link href="/sign-up" className="font-bold text-violet-700 hover:underline">
+            Create account
+          </Link>
+        </p>
       </div>
-      <p className="mt-6 text-center text-sm text-slate-500">New here? <Link href="/sign-up" className="font-semibold text-violet-700">Create account</Link></p>
     </div>
   );
 }

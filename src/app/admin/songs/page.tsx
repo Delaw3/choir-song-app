@@ -1,11 +1,21 @@
 import { Edit3, Plus, Trash2 } from "lucide-react";
-import { AddSongPanel } from "@/components/admin/add-song-panel";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { SearchInput } from "@/components/ui/search-input";
 import { songsService } from "@/services/songs.service";
+import { listAllSongsAdmin } from "@/lib/mongodb/repos/songs.repo";
+import type { Song } from "@/types/song";
 
-export default function AdminSongsPage() {
-  const songs = songsService.getAll();
+export default async function AdminSongsPage() {
+  let songs: Song[];
+  let error: string | null = null;
+
+  try {
+    songs = await listAllSongsAdmin(50);
+  } catch (err) {
+    songs = songsService.getAll();
+    error = err instanceof Error ? err.message : "Failed to load songs from MongoDB; showing mock catalog.";
+  }
 
   return (
     <div className="space-y-6">
@@ -14,7 +24,9 @@ export default function AdminSongsPage() {
           <p className="text-sm font-semibold text-violet-700">Catalog</p>
           <h1 className="mt-1 text-3xl font-black tracking-tight text-slate-950">Songs</h1>
         </div>
-        <Button><Plus className="size-4" /> Add Song</Button>
+        <Link href="/admin/songs/add">
+          <Button><Plus className="size-4" /> Add Song</Button>
+        </Link>
       </header>
       <section className="grid gap-3 rounded-3xl bg-white p-4 shadow-sm md:grid-cols-[1fr_auto_auto]">
         <SearchInput placeholder="Search songs" />
@@ -44,6 +56,20 @@ export default function AdminSongsPage() {
                 <th className="px-5 py-4">Actions</th>
               </tr>
             </thead>
+            {error && (
+              <tr>
+                <td colSpan={8} className="px-5 py-4">
+                  <div className="rounded-xl bg-rose-50 border border-rose-200 p-3 text-sm text-rose-700">{error}</div>
+                </td>
+              </tr>
+            )}
+            {!error && (
+              <tr>
+                <td colSpan={8} className="px-5 py-2">
+                  <div className="rounded-xl bg-slate-100 p-2 text-xs text-slate-500">Data source: MongoDB</div>
+                </td>
+              </tr>
+            )}
             <tbody className="divide-y divide-slate-100">
               {songs.map((song) => (
                 <tr key={song.id}>
@@ -70,7 +96,6 @@ export default function AdminSongsPage() {
           </table>
         </div>
       </section>
-      <AddSongPanel />
     </div>
   );
 }

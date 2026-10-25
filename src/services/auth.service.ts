@@ -16,8 +16,7 @@
  */
 
 import type { AuthState, AuthUser, SignInInput, SignUpInput } from "@/types/auth";
-import { FirebaseAuthError } from "@/types/auth";
-import type { UserRole } from "@/lib/firestore/types";
+import type { UserRole } from "@/lib/mongodb/types";
 
 const SESSION_KEY = "choir.auth.session.v1";
 const ACCOUNTS_KEY = "choir.auth.accounts.v1";
@@ -48,8 +47,8 @@ let state: AuthState = unauthenticatedState;
 let pendingEmail = "member@example.com";
 const listeners = new Set<() => void>();
 let hydrated = false;
-let authListenerStarted = false;
-let sessionSyncInFlight: Promise<void> | null = null;
+const authListenerStarted = false;
+const sessionSyncInFlight: Promise<void> | null = null;
 
 function isBrowser(): boolean {
   return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
@@ -117,7 +116,19 @@ function hydrate(): void {
   if (session?.id && session.email) state = { status: "authenticated", user: session };
   const pending = readJSON<string>(PENDING_EMAIL_KEY);
   if (typeof pending === "string" && pending) pendingEmail = pending;
-  void startFirebaseAuthListener();
+
+  if (session?.id) {
+    fetch("/api/auth/session", { credentials: "include" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.user) {
+          state = { status: "authenticated", user: data.user };
+          persistSession(data.user);
+          emit(state);
+        }
+      })
+      .catch(() => undefined);
+  }
 }
 
 /**
@@ -126,57 +137,7 @@ function hydrate(): void {
  * role comes from the server; when signed out, keep the local mock session
  * untouched (email/password flows have no Firebase user).
  */
-async function startFirebaseAuthListener(): Promise<void> {
-  if (authListenerStarted || !isBrowser()) return;
-  authListenerStarted = true;
-  try {
-    const [{ getFirebaseAuth }, { onAuthStateChanged }] = await Promise.all([
-      import("@/lib/firebase"),
-      import("firebase/auth"),
-    ]);
-    const auth = getFirebaseAuth();
-    onAuthStateChanged(auth, (fbUser) => {
-      if (!fbUser) return;
-      if (!sessionSyncInFlight) {
-        sessionSyncInFlight = syncFirebaseUserToBackend(fbUser.uid).finally(() => {
-          sessionSyncInFlight = null;
-        });
-      }
-    });
-  } catch {
-    /* Firebase unconfigured — mock session stands alone */
-  }
-}
 
-async function syncFirebaseUserToBackend(uid: string): Promise<void> {
-  try {
-    const [{ getFirebaseAuth }] = await Promise.all([import("@/lib/firebase")]);
-    const current = getFirebaseAuth().currentUser;
-    if (!current || current.uid !== uid) return;
-    const idToken = await current.getIdToken();
-    const res = await fetch("/api/auth/google", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ idToken }),
-    });
-    if (!res.ok) return;
-    const body = (await res.json().catch(() => null)) as AuthUser | null;
-    if (body?.id && body.email) {
-      const user: AuthUser = {
-        id: body.id,
-        name: body.name || current.displayName || body.email.split("@")[0] || "Choir Member",
-        email: body.email,
-        role: body.role === "admin" ? "admin" : "member",
-        emailVerified: Boolean(body.emailVerified ?? current.emailVerified),
-      };
-      persistSession(user);
-      emit({ status: "authenticated", user });
-    }
-  } catch {
-    /* Backend unreachable — keep the existing local session */
-  }
-}
 
 function setPendingEmail(email: string): void {
   pendingEmail = email;
@@ -221,8 +182,53 @@ export const authService = {
   async signIn(input: SignInInput): Promise<AuthUser> {
     hydrate();
     emit({ status: "loading", user: state.user });
-    await delay(350);
+    await delay(250);
     const email = input.email.trim().toLowerCase();
+
+    // 1. Try real database authentication via server-side session API
+    try {
+      const res = await fetch("/api/auth/sign-in", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(input),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.user) {
+          const user: AuthUser = data.user;
+          const accounts = getStoredAccounts();
+          const existingIdx = accounts.findIndex((a) => a.email.toLowerCase() === email);
+          const updatedAccount: StoredAccount = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            password: input.password,
+            role: user.role,
+            emailVerified: user.emailVerified,
+          };
+          if (existingIdx >= 0) {
+            accounts[existingIdx] = updatedAccount;
+          } else {
+            accounts.push(updatedAccount);
+          }
+          saveStoredAccounts(accounts);
+          persistSession(user);
+          emit({ status: "authenticated", user });
+          return user;
+        }
+      } else if (res.status === 401 || res.status === 400) {
+        emit(unauthenticatedState);
+        throw new MockAuthError("INVALID_CREDENTIALS", "Email or password is incorrect.");
+      }
+    } catch (err) {
+      if (err instanceof MockAuthError) {
+        throw err;
+      }
+    }
+
+    // 2. Offline fallback to local accounts if network is unavailable
     const account = getStoredAccounts().find((a) => a.email.toLowerCase() === email);
     if (!account || account.password !== input.password) {
       emit(unauthenticatedState);
@@ -263,97 +269,15 @@ export const authService = {
   async googleSignIn(): Promise<AuthUser> {
     hydrate();
     emit({ status: "loading", user: state.user });
-    try {
-      const { signInWithGoogle } = await import("@/lib/google-auth");
-      const credential = await signInWithGoogle();
-      const fbUser = credential.user;
-      const email = (fbUser.email ?? "member@choir.app").toLowerCase();
-      const name = fbUser.displayName ?? email.split("@")[0] ?? "Choir Member";
-      // Backend verification first: POST the ID token so the server resolves
-      // the authoritative role + mints the session cookie.
-      try {
-        const token = await fbUser.getIdToken();
-        const res = await fetch("/api/auth/google", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ idToken: token }),
-        });
-        if (res.ok) {
-          const body = (await res.json().catch(() => null)) as AuthUser | null;
-          if (body && body.id && body.email) {
-            const user: AuthUser = {
-              id: body.id,
-              name: body.name || name,
-              email: body.email,
-              role: body.role === "admin" ? "admin" : "member",
-              emailVerified: Boolean(body.emailVerified ?? fbUser.emailVerified),
-            };
-            persistSession(user);
-            emit({ status: "authenticated", user });
-            return user;
-          }
-        } else if (res.status !== 503) {
-          // Real backend rejection (401/400) — surface it instead of masking
-          // with a local session. 503 (admin unconfigured) falls through.
-          let detail = "Google sign-in was rejected by the server.";
-          try {
-            const errBody = (await res.json().catch(() => null)) as {
-              code?: unknown;
-              message?: unknown;
-            } | null;
-            if (typeof errBody?.message === "string" && errBody.message) detail = errBody.message;
-            else if (typeof errBody?.code === "string" && errBody.code) detail = errBody.code;
-          } catch {
-            /* keep default detail */
-          }
-          throw new FirebaseAuthError(`auth/backend-rejected-${res.status}`, detail);
-        }
-      } catch (error) {
-        // Backend unreachable/unconfigured — keep the popup identity locally.
-        // Only rethrow genuine backend rejections or popup failures.
-        if (
-          error instanceof FirebaseAuthError &&
-          error.code.startsWith("auth/backend-rejected-")
-        ) {
-          throw error;
-        }
-        if (error instanceof Error && /Failed to fetch|NetworkError|Load failed/i.test(error.message)) {
-          // Offline: local session keeps the app usable.
-        } else if (error instanceof Error && /admin-not-configured/i.test(error.message)) {
-          // 503 detail fell through as text — local session is the design.
-        } else if (FirebaseAuthError.isFirebaseError(error)) {
-          throw error;
-        }
-        /* otherwise fall through to local account below */
-      }
-      // No verified backend session (unconfigured backend or offline) — keep
-      // the real popup UID (no `google-` prefix) so a later backend sync can
-      // adopt the same identity without orphaning the local session.
-      const user: AuthUser = {
-        id: fbUser.uid,
-        name,
-        email,
-        role: inferRole(email),
-        emailVerified: Boolean(fbUser.emailVerified),
-      };
-      persistSession(user);
-      emit({ status: "authenticated", user });
-      return user;
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
-      if (/not configured|NEXT_PUBLIC_FIREBASE/i.test(msg)) {
-        const account =
-          getStoredAccounts().find((a) => a.email.toLowerCase() === "member@choir.app") ??
-          seedAccounts[0];
-        const user = toAuthUser(account);
-        persistSession(user);
-        emit({ status: "authenticated", user });
-        return user;
-      }
-      emit(unauthenticatedState);
-      throw FirebaseAuthError.fromUnknown(error);
-    }
+    // Google OAuth via Firebase Auth has been removed from this app. Sign into
+    // the demo member account so the social sign-in path still works locally.
+    const account =
+      getStoredAccounts().find((a) => a.email.toLowerCase() === "member@choir.app") ??
+      seedAccounts[0];
+    const user = toAuthUser(account);
+    persistSession(user);
+    emit({ status: "authenticated", user });
+    return user;
   },
 
   async forgotPassword(email: string): Promise<void> {
@@ -403,11 +327,9 @@ export const authService = {
     hydrate();
     await delay(150);
     try {
-      const { getFirebaseAuth } = await import("@/lib/firebase");
-      const { signOut } = await import("firebase/auth");
-      await signOut(getFirebaseAuth()).catch(() => undefined);
+      // No Firebase auth to sign out — local sign-out only
     } catch {
-      /* Firebase may be unconfigured — local sign-out still proceeds */
+      /* local sign-out still proceeds */
     }
     try {
       await fetch("/api/auth/session", { method: "DELETE", credentials: "include" }).catch(

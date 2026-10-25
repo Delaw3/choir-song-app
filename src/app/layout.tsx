@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { FirebaseAnalytics } from "@/components/providers/firebase-analytics";
+import { StorageInitializer } from "@/components/providers/storage-initializer";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -45,7 +45,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col"><FirebaseAnalytics />{children}</body>
+      <body className="min-h-full flex flex-col"><StorageInitializer />{children}</body>
     </html>
   );
 }

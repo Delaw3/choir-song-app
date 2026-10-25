@@ -4,7 +4,8 @@ import { ArrowLeft } from "lucide-react";
 import { AudioPlayer } from "@/components/player/audio-player";
 import { IconButton } from "@/components/ui/icon-button";
 import { VoicePartChip } from "@/components/songs/voice-part-chip";
-import { songsService } from "@/services/songs.service";
+import { SheetButton } from "@/components/songs/sheet-button";
+import { getSongById } from "@/lib/mongodb/repos/songs.repo";
 
 type Props = {
   params: Promise<{ songId: string; partId: string }>;
@@ -12,7 +13,7 @@ type Props = {
 
 export default async function PracticePage({ params }: Props) {
   const { songId, partId } = await params;
-  const song = songsService.getById(songId);
+  const song = await getSongById(songId);
   if (!song) notFound();
   const part = song.parts.find((item) => item.id === partId);
   if (!part) notFound();
@@ -29,6 +30,7 @@ export default async function PracticePage({ params }: Props) {
           <p className="truncate text-sm font-semibold text-violet-700">{song.title}</p>
           <h1 className="text-2xl font-black text-slate-950">{part.displayName}</h1>
         </div>
+        {song.sheetUrl && <SheetButton url={song.sheetUrl} />}
       </header>
       <section>
         <p className="mb-3 text-sm font-black text-slate-500">Switch part</p>

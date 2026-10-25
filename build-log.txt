@@ -1,0 +1,1166 @@
+▲ Next.js 16.3.6 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.ts took 127ms
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 33 errors:
+./src/app/admin/songs/add/page.tsx:234:7
+Error: Expected a semicolon
+  [90m232 |[0m         removeSheet();
+  [90m233 |[0m       }, [35m1500[0m);
+[31m[1m>[0m [90m234 |[0m     } [36mcatch[0m (error) {
+  [90m    |[0m       [31m[1m^^^^^[0m
+  [90m235 |[0m       setSaveError(error [36minstanceof[0m [33mError[0m ? error.message : [32m"Failed to save song."[0m);
+  [90m236 |[0m     } [36mfinally[0m {
+  [90m237 |[0m       setIsSaving([36mfalse[0m);
+
+Parsing ecmascript source code failed
+
+
+./src/lib/mongodb.ts:1:1
+Error: You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
+    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
+[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m
+  [90m3 |[0m [36mimport[0m { [33mMongoClient[0m, [36mtype[0m [33mDb[0m } [36mfrom[0m [32m"mongodb"[0m;
+  [90m4 |[0m
+
+Ecmascript file had an error
+
+Import traces:
+  Server Component:
+    ./src/lib/mongodb.ts
+    ./src/lib/mongodb/repos/songs.repo.ts
+    ./src/app/admin/songs/page.tsx
+
+  Client Component Browser:
+    ./src/lib/mongodb.ts [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/lib/mongodb.ts [Client Component SSR]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component SSR]
+    ./src/app/admin/categories/page.tsx [Client Component SSR]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+
+./src/lib/mongodb/repos/categories.repo.ts:1:1
+Error: You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
+    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
+[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m
+  [90m3 |[0m [36mimport[0m { [33mObjectId[0m } [36mfrom[0m [32m"mongodb"[0m;
+  [90m4 |[0m [36mimport[0m { getMongoDb } [36mfrom[0m [32m"@/lib/mongodb"[0m;
+
+Ecmascript file had an error
+
+Import traces:
+  Client Component Browser:
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component SSR]
+    ./src/app/admin/categories/page.tsx [Client Component SSR]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+
+./src/lib/mongodb/repos/songs.repo.ts:1:1
+Error: You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
+    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
+[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m
+  [90m3 |[0m [36mimport[0m { [33mObjectId[0m } [36mfrom[0m [32m"mongodb"[0m;
+  [90m4 |[0m [36mimport[0m { getMongoDb } [36mfrom[0m [32m"@/lib/mongodb"[0m;
+
+Ecmascript file had an error
+
+Import traces:
+  Server Component:
+    ./src/lib/mongodb/repos/songs.repo.ts
+    ./src/app/admin/songs/page.tsx
+
+  Client Component Browser:
+    ./src/lib/mongodb/repos/songs.repo.ts [Client Component Browser]
+    ./src/hooks/use-firestore-songs.ts [Client Component Browser]
+    ./src/app/(member)/songs/page.tsx [Client Component Browser]
+    ./src/app/(member)/songs/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/lib/mongodb/repos/songs.repo.ts [Client Component SSR]
+    ./src/hooks/use-firestore-songs.ts [Client Component SSR]
+    ./src/app/(member)/songs/page.tsx [Client Component SSR]
+    ./src/app/(member)/songs/page.tsx [Server Component]
+
+
+./src/app/admin/songs/add/page.tsx:130:9
+Error: await isn't allowed in non-async function
+  [90m128 |[0m       [36mconst[0m partAudioUrls: [33mRecord[0m<string, string> = {};
+  [90m129 |[0m       [36mif[0m (storageEnabled) {
+[31m[1m>[0m [90m130 |[0m         [36mawait[0m [33mPromise[0m.all(
+  [90m    |[0m         [31m[1m^^^^^[0m
+  [90m131 |[0m           parts.map([36masync[0m (part) => {
+  [90m132 |[0m             [36mconst[0m file = partAudioFiles[part.id];
+  [90m133 |[0m             [36mif[0m (!file) [36mreturn[0m;
+
+Parsing ecmascript source code failed
+
+
+./src/app/admin/songs/add/page.tsx:146:29
+Error: await isn't allowed in non-async function
+  [90m144 |[0m           [36mconst[0m file = partAudioFiles[part.id];
+  [90m145 |[0m           [36mif[0m (file) {
+[31m[1m>[0m [90m146 |[0m             [36mconst[0m dataUrl = [36mawait[0m fileToDataUrl(file);
+  [90m    |[0m                             [31m[1m^^^^^[0m
+  [90m147 |[0m             partAudioUrls[part.id] = dataUrl;
+  [90m148 |[0m             [36mtry[0m {
+  [90m149 |[0m               localStorage.setItem([32m`mock_song_[0m${songId[32m}_part_[0m${part.id[32m}_audio`[0m, dataUrl);
+
+Parsing ecmascript source code failed
+
+
+./src/app/admin/songs/add/page.tsx:160:9
+Error: await isn't allowed in non-async function
+  [90m158 |[0m       [36mif[0m (storageEnabled) {
+  [90m159 |[0m         [36mconst[0m now = [36mnew[0m [33mDate[0m();
+[31m[1m>[0m [90m160 |[0m         [36mawait[0m [33mPromise[0m.all(
+  [90m    |[0m         [31m[1m^^^^^[0m
+  [90m161 |[0m           parts.map([36masync[0m (part) => {
+  [90m162 |[0m             [36mconst[0m partNumber = part.partNumber ? [33mNumber[0m(part.partNumber) : [36mundefined[0m;
+  [90m163 |[0m             [36mconst[0m audioUrl = partAudioUrls[part.id] || part.audioFile.trim() || [36mundefined[0m;
+
+Parsing ecmascript source code failed
+
+
+./src/lib/mongodb.ts:1:1
+Error: 'server-only' cannot be imported from a Client Component module
+[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m
+  [90m3 |[0m [36mimport[0m { [33mMongoClient[0m, [36mtype[0m [33mDb[0m } [36mfrom[0m [32m"mongodb"[0m;
+  [90m4 |[0m
+
+It should only be used from a Server Component.
+
+Import traces:
+  Server Component:
+    ./src/lib/mongodb.ts
+    ./src/lib/mongodb/repos/songs.repo.ts
+    ./src/app/admin/songs/page.tsx
+
+  Client Component Browser:
+    ./src/lib/mongodb.ts [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/lib/mongodb.ts [Client Component SSR]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component SSR]
+    ./src/app/admin/categories/page.tsx [Client Component SSR]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+
+./src/lib/mongodb/repos/categories.repo.ts:1:1
+Error: 'server-only' cannot be imported from a Client Component module
+[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m
+  [90m3 |[0m [36mimport[0m { [33mObjectId[0m } [36mfrom[0m [32m"mongodb"[0m;
+  [90m4 |[0m [36mimport[0m { getMongoDb } [36mfrom[0m [32m"@/lib/mongodb"[0m;
+
+It should only be used from a Server Component.
+
+Import traces:
+  Client Component Browser:
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component SSR]
+    ./src/app/admin/categories/page.tsx [Client Component SSR]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+
+./src/lib/mongodb/repos/songs.repo.ts:1:1
+Error: 'server-only' cannot be imported from a Client Component module
+[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m
+  [90m3 |[0m [36mimport[0m { [33mObjectId[0m } [36mfrom[0m [32m"mongodb"[0m;
+  [90m4 |[0m [36mimport[0m { getMongoDb } [36mfrom[0m [32m"@/lib/mongodb"[0m;
+
+It should only be used from a Server Component.
+
+Import traces:
+  Server Component:
+    ./src/lib/mongodb/repos/songs.repo.ts
+    ./src/app/admin/songs/page.tsx
+
+  Client Component Browser:
+    ./src/lib/mongodb/repos/songs.repo.ts [Client Component Browser]
+    ./src/hooks/use-firestore-songs.ts [Client Component Browser]
+    ./src/app/(member)/songs/page.tsx [Client Component Browser]
+    ./src/app/(member)/songs/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/lib/mongodb/repos/songs.repo.ts [Client Component SSR]
+    ./src/hooks/use-firestore-songs.ts [Client Component SSR]
+    ./src/app/(member)/songs/page.tsx [Client Component SSR]
+    ./src/app/(member)/songs/page.tsx [Server Component]
+
+
+./node_modules/mongodb/lib/client-side-encryption/mongocryptd_manager.js:39:27
+Error: Module not found: Can't resolve 'child_process'
+  [90m37 |[0m         [36mconst[0m cmdName = [36mthis[0m.spawnPath || [32m'mongocryptd'[0m;
+  [90m38 |[0m         [90m// eslint-disable-next-line @typescript-eslint/no-require-imports[0m
+[31m[1m>[0m [90m39 |[0m         [36mconst[0m { spawn } = require([32m'child_process'[0m);
+  [90m   |[0m                           [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m40 |[0m         [90m// Spawned with stdio: ignore and detached: true[0m
+  [90m41 |[0m         [90m// to ensure child can outlive parent.[0m
+  [90m42 |[0m         [36mthis[0m._child = spawn(cmdName, [36mthis[0m.spawnArgs, {
+
+
+
+Import traces:
+  #1 [externals-tracing]:
+    ./node_modules/mongodb/lib/client-side-encryption/mongocryptd_manager.js
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #2 [Client Component Browser]:
+    ./node_modules/mongodb/lib/client-side-encryption/mongocryptd_manager.js [Client Component Browser]
+    ./node_modules/mongodb/lib/client-side-encryption/auto_encrypter.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  #3 [externals-tracing]:
+    ./node_modules/mongodb/lib/client-side-encryption/mongocryptd_manager.js [externals-tracing]
+    ./node_modules/mongodb/lib/client-side-encryption/auto_encrypter.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/mongodb/lib/cmap/auth/gssapi.js:6:13
+Error: Module not found: Can't resolve 'dns'
+  [90m4 |[0m exports.performGSSAPICanonicalizeHostName = performGSSAPICanonicalizeHostName;
+  [90m5 |[0m exports.resolveCname = resolveCname;
+[31m[1m>[0m [90m6 |[0m [36mconst[0m dns = require([32m"dns"[0m);
+  [90m  |[0m             [31m[1m^^^^^^^^^^^^^^[0m
+  [90m7 |[0m [36mconst[0m deps_1 = require([32m"../../deps"[0m);
+  [90m8 |[0m [36mconst[0m error_1 = require([32m"../../error"[0m);
+  [90m9 |[0m [36mconst[0m utils_1 = require([32m"../../utils"[0m);
+
+
+
+Import traces:
+  #1 [Client Component Browser]:
+    ./node_modules/mongodb/lib/cmap/auth/gssapi.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  #2 [externals-tracing]:
+    ./node_modules/mongodb/lib/cmap/auth/gssapi.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #3 [externals-tracing]:
+    ./node_modules/mongodb/lib/cmap/auth/gssapi.js
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/mongodb/lib/connection_string.js:6:13
+Error: Module not found: Can't resolve 'dns'
+  [90m4 |[0m exports.resolveSRVRecord = resolveSRVRecord;
+  [90m5 |[0m exports.parseOptions = parseOptions;
+[31m[1m>[0m [90m6 |[0m [36mconst[0m dns = require([32m"dns"[0m);
+  [90m  |[0m             [31m[1m^^^^^^^^^^^^^^[0m
+  [90m7 |[0m [36mconst[0m mongodb_connection_string_url_1 = require([32m"mongodb-connection-string-url"[0m);
+  [90m8 |[0m [36mconst[0m process = require([32m"process"[0m);
+  [90m9 |[0m [36mconst[0m url_1 = require([32m"url"[0m);
+
+
+
+Import traces:
+  #1 [externals-tracing]:
+    ./node_modules/mongodb/lib/connection_string.js
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #2 [externals-tracing]:
+    ./node_modules/mongodb/lib/connection_string.js [externals-tracing]
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #3 [Client Component Browser]:
+    ./node_modules/mongodb/lib/connection_string.js [Client Component Browser]
+    ./node_modules/mongodb/lib/mongo_client.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/songs.repo.ts [Client Component Browser]
+    ./src/hooks/use-firestore-songs.ts [Client Component Browser]
+    ./src/app/(member)/songs/page.tsx [Client Component Browser]
+    ./src/app/(member)/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/mongodb/lib/sdam/srv_polling.js:4:13
+Error: Module not found: Can't resolve 'dns'
+  [90m2 |[0m [33mObject[0m.defineProperty(exports, [32m"__esModule"[0m, { value: [36mtrue[0m });
+  [90m3 |[0m exports.[33mSrvPoller[0m = exports.[33mSrvPollingEvent[0m = [36mvoid[0m [35m0[0m;
+[31m[1m>[0m [90m4 |[0m [36mconst[0m dns = require([32m"dns"[0m);
+  [90m  |[0m             [31m[1m^^^^^^^^^^^^^^[0m
+  [90m5 |[0m [36mconst[0m timers_1 = require([32m"timers"[0m);
+  [90m6 |[0m [36mconst[0m error_1 = require([32m"../error"[0m);
+  [90m7 |[0m [36mconst[0m mongo_types_1 = require([32m"../mongo_types"[0m);
+
+
+
+Import traces:
+  #1 [Client Component Browser]:
+    ./node_modules/mongodb/lib/sdam/srv_polling.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  #2 [externals-tracing]:
+    ./node_modules/mongodb/lib/sdam/srv_polling.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #3 [externals-tracing]:
+    ./node_modules/mongodb/lib/sdam/srv_polling.js
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/gcp-metadata/build/src/gcp-residency.js:24:14
+Error: Module not found: Can't resolve 'fs'
+  [90m22 |[0m exports.isGoogleComputeEngine = isGoogleComputeEngine;
+  [90m23 |[0m exports.detectGCPResidency = detectGCPResidency;
+[31m[1m>[0m [90m24 |[0m [36mconst[0m fs_1 = require([32m"fs"[0m);
+  [90m   |[0m              [31m[1m^^^^^^^^^^^^^[0m
+  [90m25 |[0m [36mconst[0m os_1 = require([32m"os"[0m);
+  [90m26 |[0m /**
+  [90m27 |[0m  * [33mKnown[0m paths unique to [33mGoogle[0m [33mCompute[0m [33mEngine[0m [33mLinux[0m instances
+
+
+
+Import traces:
+  Client Component Browser:
+    ./node_modules/gcp-metadata/build/src/gcp-residency.js [Client Component Browser]
+    ./node_modules/gcp-metadata/build/src/index.js [Client Component Browser]
+    ./node_modules/mongodb/lib/deps.js [Client Component Browser]
+    ./node_modules/mongodb/lib/cmap/auth/gssapi.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  externals-tracing:
+    ./node_modules/gcp-metadata/build/src/gcp-residency.js [externals-tracing]
+    ./node_modules/gcp-metadata/build/src/index.js [externals-tracing]
+    ./node_modules/mongodb/lib/deps.js [externals-tracing]
+    ./node_modules/mongodb/lib/cmap/auth/gssapi.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/mongodb/lib/cmap/auth/mongodb_oidc/token_machine_workflow.js:4:12
+Error: Module not found: Can't resolve 'fs'
+  [90m2 |[0m [33mObject[0m.defineProperty(exports, [32m"__esModule"[0m, { value: [36mtrue[0m });
+  [90m3 |[0m exports.tokenMachineCallback = [36mvoid[0m [35m0[0m;
+[31m[1m>[0m [90m4 |[0m [36mconst[0m fs = require([32m"fs"[0m);
+  [90m  |[0m            [31m[1m^^^^^^^^^^^^^[0m
+  [90m5 |[0m [36mconst[0m process = require([32m"process"[0m);
+  [90m6 |[0m [36mconst[0m error_1 = require([32m"../../../error"[0m);
+  [90m7 |[0m [90m/** Error for when the token is missing in the environment. */[0m
+
+
+
+Import traces:
+  #1 [externals-tracing]:
+    ./node_modules/mongodb/lib/cmap/auth/mongodb_oidc/token_machine_workflow.js
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #2 [Client Component Browser]:
+    ./node_modules/mongodb/lib/cmap/auth/mongodb_oidc/token_machine_workflow.js [Client Component Browser]
+    ./node_modules/mongodb/lib/cmap/auth/mongodb_oidc.js [Client Component Browser]
+    ./node_modules/mongodb/lib/mongo_client_auth_providers.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  #3 [externals-tracing]:
+    ./node_modules/mongodb/lib/cmap/auth/mongodb_oidc/token_machine_workflow.js [externals-tracing]
+    ./node_modules/mongodb/lib/cmap/auth/mongodb_oidc.js [externals-tracing]
+    ./node_modules/mongodb/lib/mongo_client_auth_providers.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/mongodb/lib/mongo_client.js:4:14
+Error: Module not found: Can't resolve 'fs'
+  [90m2 |[0m [33mObject[0m.defineProperty(exports, [32m"__esModule"[0m, { value: [36mtrue[0m });
+  [90m3 |[0m exports.[33mMongoClient[0m = exports.[33mServerApiVersion[0m = [36mvoid[0m [35m0[0m;
+[31m[1m>[0m [90m4 |[0m [36mconst[0m fs_1 = require([32m"fs"[0m);
+  [90m  |[0m              [31m[1m^^^^^^^^^^^^^[0m
+  [90m5 |[0m [36mconst[0m _1 = require([32m"."[0m);
+  [90m6 |[0m [36mconst[0m bson_1 = require([32m"./bson"[0m);
+  [90m7 |[0m [36mconst[0m change_stream_1 = require([32m"./change_stream"[0m);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./node_modules/mongodb/lib/mongo_client.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  externals-tracing:
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/mongodb/lib/utils.js:53:14
+Error: Module not found: Can't resolve 'fs'
+  [90m51 |[0m exports.addAbortListener = addAbortListener;
+  [90m52 |[0m exports.abortable = abortable;
+[31m[1m>[0m [90m53 |[0m [36mconst[0m fs_1 = require([32m"fs"[0m);
+  [90m   |[0m              [31m[1m^^^^^^^^^^^^^[0m
+  [90m54 |[0m [36mconst[0m http = require([32m"http"[0m);
+  [90m55 |[0m [36mconst[0m process = require([32m"process"[0m);
+  [90m56 |[0m [36mconst[0m timers_1 = require([32m"timers"[0m);
+
+
+
+Import traces:
+  #1 [externals-tracing]:
+    ./node_modules/mongodb/lib/utils.js
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #2 [externals-tracing]:
+    ./node_modules/mongodb/lib/utils.js [externals-tracing]
+    ./node_modules/mongodb/lib/admin.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #3 [Client Component Browser]:
+    ./node_modules/mongodb/lib/utils.js [Client Component Browser]
+    ./node_modules/mongodb/lib/admin.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/songs.repo.ts [Client Component Browser]
+    ./src/hooks/use-firestore-songs.ts [Client Component Browser]
+    ./src/app/(member)/songs/page.tsx [Client Component Browser]
+    ./src/app/(member)/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/mongodb/lib/client-side-encryption/state_machine.js:4:12
+Error: Module not found: Can't resolve 'fs/promises'
+  [90m2 |[0m [33mObject[0m.defineProperty(exports, [32m"__esModule"[0m, { value: [36mtrue[0m });
+  [90m3 |[0m exports.[33mStateMachine[0m = [36mvoid[0m [35m0[0m;
+[31m[1m>[0m [90m4 |[0m [36mconst[0m fs = require([32m"fs/promises"[0m);
+  [90m  |[0m            [31m[1m^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m [36mconst[0m net = require([32m"net"[0m);
+  [90m6 |[0m [36mconst[0m process = require([32m"process"[0m);
+  [90m7 |[0m [36mconst[0m tls = require([32m"tls"[0m);
+
+
+
+Import traces:
+  #1 [externals-tracing]:
+    ./node_modules/mongodb/lib/client-side-encryption/state_machine.js
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #2 [Client Component Browser]:
+    ./node_modules/mongodb/lib/client-side-encryption/state_machine.js [Client Component Browser]
+    ./node_modules/mongodb/lib/client-side-encryption/auto_encrypter.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  #3 [externals-tracing]:
+    ./node_modules/mongodb/lib/client-side-encryption/state_machine.js [externals-tracing]
+    ./node_modules/mongodb/lib/client-side-encryption/auto_encrypter.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/mongodb/lib/cmap/auth/mongodb_oidc/k8s_machine_workflow.js:4:20
+Error: Module not found: Can't resolve 'fs/promises'
+  [90m2 |[0m [33mObject[0m.defineProperty(exports, [32m"__esModule"[0m, { value: [36mtrue[0m });
+  [90m3 |[0m exports.k8sCallback = [36mvoid[0m [35m0[0m;
+[31m[1m>[0m [90m4 |[0m [36mconst[0m promises_1 = require([32m"fs/promises"[0m);
+  [90m  |[0m                    [31m[1m^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m [36mconst[0m process = require([32m"process"[0m);
+  [90m6 |[0m [90m/** The fallback file name */[0m
+  [90m7 |[0m [36mconst[0m [33mFALLBACK_FILENAME[0m = [32m'/var/run/secrets/kubernetes.io/serviceaccount/token'[0m;
+
+
+
+Import traces:
+  #1 [externals-tracing]:
+    ./node_modules/mongodb/lib/cmap/auth/mongodb_oidc/k8s_machine_workflow.js
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #2 [Client Component Browser]:
+    ./node_modules/mongodb/lib/cmap/auth/mongodb_oidc/k8s_machine_workflow.js [Client Component Browser]
+    ./node_modules/mongodb/lib/cmap/auth/mongodb_oidc.js [Client Component Browser]
+    ./node_modules/mongodb/lib/mongo_client_auth_providers.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  #3 [externals-tracing]:
+    ./node_modules/mongodb/lib/cmap/auth/mongodb_oidc/k8s_machine_workflow.js [externals-tracing]
+    ./node_modules/mongodb/lib/cmap/auth/mongodb_oidc.js [externals-tracing]
+    ./node_modules/mongodb/lib/mongo_client_auth_providers.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/agent-base/dist/index.js:30:26
+Error: Module not found: Can't resolve 'net'
+  [90m28 |[0m [33mObject[0m.defineProperty(exports, [32m"__esModule"[0m, { value: [36mtrue[0m });
+  [90m29 |[0m exports.[33mAgent[0m = [36mvoid[0m [35m0[0m;
+[31m[1m>[0m [90m30 |[0m [36mconst[0m net = __importStar(require([32m"net"[0m));
+  [90m   |[0m                          [31m[1m^^^^^^^^^^^^^^[0m
+  [90m31 |[0m [36mconst[0m http = __importStar(require([32m"http"[0m));
+  [90m32 |[0m [36mconst[0m https_1 = require([32m"https"[0m);
+  [90m33 |[0m __exportStar(require([32m"./helpers"[0m), exports);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./node_modules/agent-base/dist/index.js [Client Component Browser]
+    ./node_modules/https-proxy-agent/dist/index.js [Client Component Browser]
+    ./node_modules/gcp-metadata/node_modules/gaxios/build/cjs/src/gaxios.js [Client Component Browser]
+    ./node_modules/gcp-metadata/node_modules/gaxios/build/cjs/src/index.js [Client Component Browser]
+    ./node_modules/gcp-metadata/build/src/index.js [Client Component Browser]
+    ./node_modules/mongodb/lib/deps.js [Client Component Browser]
+    ./node_modules/mongodb/lib/cmap/auth/gssapi.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  externals-tracing:
+    ./node_modules/agent-base/dist/index.js [externals-tracing]
+    ./node_modules/https-proxy-agent/dist/index.js [externals-tracing]
+    ./node_modules/gcp-metadata/node_modules/gaxios/build/cjs/src/gaxios.js [externals-tracing]
+    ./node_modules/gcp-metadata/node_modules/gaxios/build/cjs/src/index.js [externals-tracing]
+    ./node_modules/gcp-metadata/build/src/index.js [externals-tracing]
+    ./node_modules/mongodb/lib/deps.js [externals-tracing]
+    ./node_modules/mongodb/lib/cmap/auth/gssapi.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/https-proxy-agent/dist/index.js:30:26
+Error: Module not found: Can't resolve 'net'
+  [90m28 |[0m [33mObject[0m.defineProperty(exports, [32m"__esModule"[0m, { value: [36mtrue[0m });
+  [90m29 |[0m exports.[33mHttpsProxyAgent[0m = [36mvoid[0m [35m0[0m;
+[31m[1m>[0m [90m30 |[0m [36mconst[0m net = __importStar(require([32m"net"[0m));
+  [90m   |[0m                          [31m[1m^^^^^^^^^^^^^^[0m
+  [90m31 |[0m [36mconst[0m tls = __importStar(require([32m"tls"[0m));
+  [90m32 |[0m [36mconst[0m assert_1 = __importDefault(require([32m"assert"[0m));
+  [90m33 |[0m [36mconst[0m debug_1 = __importDefault(require([32m"debug"[0m));
+
+
+
+Import traces:
+  Client Component Browser:
+    ./node_modules/https-proxy-agent/dist/index.js [Client Component Browser]
+    ./node_modules/gcp-metadata/node_modules/gaxios/build/cjs/src/gaxios.js [Client Component Browser]
+    ./node_modules/gcp-metadata/node_modules/gaxios/build/cjs/src/index.js [Client Component Browser]
+    ./node_modules/gcp-metadata/build/src/index.js [Client Component Browser]
+    ./node_modules/mongodb/lib/deps.js [Client Component Browser]
+    ./node_modules/mongodb/lib/cmap/auth/gssapi.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  externals-tracing:
+    ./node_modules/https-proxy-agent/dist/index.js [externals-tracing]
+    ./node_modules/gcp-metadata/node_modules/gaxios/build/cjs/src/gaxios.js [externals-tracing]
+    ./node_modules/gcp-metadata/node_modules/gaxios/build/cjs/src/index.js [externals-tracing]
+    ./node_modules/gcp-metadata/build/src/index.js [externals-tracing]
+    ./node_modules/mongodb/lib/deps.js [externals-tracing]
+    ./node_modules/mongodb/lib/cmap/auth/gssapi.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/mongodb/lib/client-side-encryption/auto_encrypter.js:5:13
+Error: Module not found: Can't resolve 'net'
+  [90m3 |[0m [33mObject[0m.defineProperty(exports, [32m"__esModule"[0m, { value: [36mtrue[0m });
+  [90m4 |[0m exports.[33mAutoEncrypter[0m = exports.[33mAutoEncryptionLoggerLevel[0m = [36mvoid[0m [35m0[0m;
+[31m[1m>[0m [90m5 |[0m [36mconst[0m net = require([32m"net"[0m);
+  [90m  |[0m             [31m[1m^^^^^^^^^^^^^^[0m
+  [90m6 |[0m [36mconst[0m bson_1 = require([32m"../bson"[0m);
+  [90m7 |[0m [36mconst[0m constants_1 = require([32m"../constants"[0m);
+  [90m8 |[0m [36mconst[0m deps_1 = require([32m"../deps"[0m);
+
+
+
+Import traces:
+  #1 [Client Component Browser]:
+    ./node_modules/mongodb/lib/client-side-encryption/auto_encrypter.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  #2 [externals-tracing]:
+    ./node_modules/mongodb/lib/client-side-encryption/auto_encrypter.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #3 [externals-tracing]:
+    ./node_modules/mongodb/lib/client-side-encryption/auto_encrypter.js
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/mongodb/lib/client-side-encryption/state_machine.js:5:13
+Error: Module not found: Can't resolve 'net'
+  [90m3 |[0m exports.[33mStateMachine[0m = [36mvoid[0m [35m0[0m;
+  [90m4 |[0m [36mconst[0m fs = require([32m"fs/promises"[0m);
+[31m[1m>[0m [90m5 |[0m [36mconst[0m net = require([32m"net"[0m);
+  [90m  |[0m             [31m[1m^^^^^^^^^^^^^^[0m
+  [90m6 |[0m [36mconst[0m process = require([32m"process"[0m);
+  [90m7 |[0m [36mconst[0m tls = require([32m"tls"[0m);
+  [90m8 |[0m [36mconst[0m bson_1 = require([32m"../bson"[0m);
+
+
+
+Import traces:
+  #1 [externals-tracing]:
+    ./node_modules/mongodb/lib/client-side-encryption/state_machine.js
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #2 [Client Component Browser]:
+    ./node_modules/mongodb/lib/client-side-encryption/state_machine.js [Client Component Browser]
+    ./node_modules/mongodb/lib/client-side-encryption/auto_encrypter.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  #3 [externals-tracing]:
+    ./node_modules/mongodb/lib/client-side-encryption/state_machine.js [externals-tracing]
+    ./node_modules/mongodb/lib/client-side-encryption/auto_encrypter.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/mongodb/lib/cmap/connect.js:9:13
+Error: Module not found: Can't resolve 'net'
+  [90m 7 |[0m exports.prepareHandshakeDocument = prepareHandshakeDocument;
+  [90m 8 |[0m exports.makeSocket = makeSocket;
+[31m[1m>[0m [90m 9 |[0m [36mconst[0m net = require([32m"net"[0m);
+  [90m   |[0m             [31m[1m^^^^^^^^^^^^^^[0m
+  [90m10 |[0m [36mconst[0m tls = require([32m"tls"[0m);
+  [90m11 |[0m [36mconst[0m constants_1 = require([32m"../constants"[0m);
+  [90m12 |[0m [36mconst[0m deps_1 = require([32m"../deps"[0m);
+
+
+
+Import traces:
+  #1 [externals-tracing]:
+    ./node_modules/mongodb/lib/cmap/connect.js
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #2 [externals-tracing]:
+    ./node_modules/mongodb/lib/cmap/connect.js [externals-tracing]
+    ./node_modules/mongodb/lib/sdam/monitor.js [externals-tracing]
+    ./node_modules/mongodb/lib/connection_string.js [externals-tracing]
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #3 [Client Component Browser]:
+    ./node_modules/mongodb/lib/cmap/connect.js [Client Component Browser]
+    ./node_modules/mongodb/lib/sdam/monitor.js [Client Component Browser]
+    ./node_modules/mongodb/lib/connection_string.js [Client Component Browser]
+    ./node_modules/mongodb/lib/mongo_client.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/songs.repo.ts [Client Component Browser]
+    ./src/hooks/use-firestore-songs.ts [Client Component Browser]
+    ./src/app/(member)/songs/page.tsx [Client Component Browser]
+    ./src/app/(member)/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/socks/build/client/socksclient.js:14:13
+Error: Module not found: Can't resolve 'net'
+  [90m12 |[0m exports.[33mSocksClientError[0m = exports.[33mSocksClient[0m = [36mvoid[0m [35m0[0m;
+  [90m13 |[0m [36mconst[0m events_1 = require([32m"events"[0m);
+[31m[1m>[0m [90m14 |[0m [36mconst[0m net = require([32m"net"[0m);
+  [90m   |[0m             [31m[1m^^^^^^^^^^^^^^[0m
+  [90m15 |[0m [36mconst[0m smart_buffer_1 = require([32m"smart-buffer"[0m);
+  [90m16 |[0m [36mconst[0m constants_1 = require([32m"../common/constants"[0m);
+  [90m17 |[0m [36mconst[0m helpers_1 = require([32m"../common/helpers"[0m);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./node_modules/socks/build/client/socksclient.js [Client Component Browser]
+    ./node_modules/socks/build/index.js [Client Component Browser]
+    ./node_modules/mongodb/lib/deps.js [Client Component Browser]
+    ./node_modules/mongodb/lib/cmap/auth/gssapi.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  externals-tracing:
+    ./node_modules/socks/build/client/socksclient.js [externals-tracing]
+    ./node_modules/socks/build/index.js [externals-tracing]
+    ./node_modules/mongodb/lib/deps.js [externals-tracing]
+    ./node_modules/mongodb/lib/cmap/auth/gssapi.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/socks/build/common/helpers.js:12:13
+Error: Module not found: Can't resolve 'net'
+  [90m10 |[0m [36mconst[0m stream = require([32m"stream"[0m);
+  [90m11 |[0m [36mconst[0m ip_address_1 = require([32m"ip-address"[0m);
+[31m[1m>[0m [90m12 |[0m [36mconst[0m net = require([32m"net"[0m);
+  [90m   |[0m             [31m[1m^^^^^^^^^^^^^^[0m
+  [90m13 |[0m /**
+  [90m14 |[0m  * [33mValidates[0m the provided [33mSocksClientOptions[0m
+  [90m15 |[0m  * @param options { [33mSocksClientOptions[0m }
+
+
+
+Import traces:
+  Client Component Browser:
+    ./node_modules/socks/build/common/helpers.js [Client Component Browser]
+    ./node_modules/socks/build/client/socksclient.js [Client Component Browser]
+    ./node_modules/socks/build/index.js [Client Component Browser]
+    ./node_modules/mongodb/lib/deps.js [Client Component Browser]
+    ./node_modules/mongodb/lib/cmap/auth/gssapi.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  externals-tracing:
+    ./node_modules/socks/build/common/helpers.js [externals-tracing]
+    ./node_modules/socks/build/client/socksclient.js [externals-tracing]
+    ./node_modules/socks/build/index.js [externals-tracing]
+    ./node_modules/mongodb/lib/deps.js [externals-tracing]
+    ./node_modules/mongodb/lib/cmap/auth/gssapi.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/mongodb/lib/cmap/auth/mongodb_oidc/callback_workflow.js:4:20
+Error: Module not found: Can't resolve 'timers/promises'
+  [90m2 |[0m [33mObject[0m.defineProperty(exports, [32m"__esModule"[0m, { value: [36mtrue[0m });
+  [90m3 |[0m exports.[33mCallbackWorkflow[0m = exports.[33mAUTOMATED_TIMEOUT_MS[0m = exports.[33mHUMAN_TIMEOUT_MS[0m = [36mvoid[0m [35m0[0m;
+[31m[1m>[0m [90m4 |[0m [36mconst[0m promises_1 = require([32m"timers/promises"[0m);
+  [90m  |[0m                    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m [36mconst[0m error_1 = require([32m"../../../error"[0m);
+  [90m6 |[0m [36mconst[0m utils_1 = require([32m"../../../utils"[0m);
+  [90m7 |[0m [36mconst[0m command_builders_1 = require([32m"./command_builders"[0m);
+
+
+
+Import traces:
+  #1 [externals-tracing]:
+    ./node_modules/mongodb/lib/cmap/auth/mongodb_oidc/callback_workflow.js
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #2 [Client Component Browser]:
+    ./node_modules/mongodb/lib/cmap/auth/mongodb_oidc/callback_workflow.js [Client Component Browser]
+    ./node_modules/mongodb/lib/cmap/auth/mongodb_oidc/human_callback_workflow.js [Client Component Browser]
+    ./node_modules/mongodb/lib/mongo_client_auth_providers.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  #3 [externals-tracing]:
+    ./node_modules/mongodb/lib/cmap/auth/mongodb_oidc/callback_workflow.js [externals-tracing]
+    ./node_modules/mongodb/lib/cmap/auth/mongodb_oidc/human_callback_workflow.js [externals-tracing]
+    ./node_modules/mongodb/lib/mongo_client_auth_providers.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/mongodb/lib/operations/execute_operation.js:7:20
+Error: Module not found: Can't resolve 'timers/promises'
+  [90m 5 |[0m exports.autoConnect = autoConnect;
+  [90m 6 |[0m exports.calculateBaseBackoffMS = calculateBaseBackoffMS;
+[31m[1m>[0m [90m 7 |[0m [36mconst[0m promises_1 = require([32m"timers/promises"[0m);
+  [90m   |[0m                    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m 8 |[0m [36mconst[0m constants_1 = require([32m"../cmap/wire_protocol/constants"[0m);
+  [90m 9 |[0m [36mconst[0m error_1 = require([32m"../error"[0m);
+  [90m10 |[0m [36mconst[0m read_preference_1 = require([32m"../read_preference"[0m);
+
+
+
+Import traces:
+  #1 [externals-tracing]:
+    ./node_modules/mongodb/lib/operations/execute_operation.js
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #2 [Client Component Browser]:
+    ./node_modules/mongodb/lib/operations/execute_operation.js [Client Component Browser]
+    ./node_modules/mongodb/lib/bulk/common.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  #3 [externals-tracing]:
+    ./node_modules/mongodb/lib/operations/execute_operation.js [externals-tracing]
+    ./node_modules/mongodb/lib/bulk/common.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/mongodb/lib/sessions.js:7:20
+Error: Module not found: Can't resolve 'timers/promises'
+  [90m 5 |[0m exports.applySession = applySession;
+  [90m 6 |[0m exports.updateSessionFromResponse = updateSessionFromResponse;
+[31m[1m>[0m [90m 7 |[0m [36mconst[0m promises_1 = require([32m"timers/promises"[0m);
+  [90m   |[0m                    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m 8 |[0m [36mconst[0m bson_1 = require([32m"./bson"[0m);
+  [90m 9 |[0m [36mconst[0m metrics_1 = require([32m"./cmap/metrics"[0m);
+  [90m10 |[0m [36mconst[0m constants_1 = require([32m"./constants"[0m);
+
+
+
+Import traces:
+  #1 [Client Component Browser]:
+    ./node_modules/mongodb/lib/sessions.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  #2 [externals-tracing]:
+    ./node_modules/mongodb/lib/sessions.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #3 [externals-tracing]:
+    ./node_modules/mongodb/lib/sessions.js
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/https-proxy-agent/dist/index.js:31:26
+Error: Module not found: Can't resolve 'tls'
+  [90m29 |[0m exports.[33mHttpsProxyAgent[0m = [36mvoid[0m [35m0[0m;
+  [90m30 |[0m [36mconst[0m net = __importStar(require([32m"net"[0m));
+[31m[1m>[0m [90m31 |[0m [36mconst[0m tls = __importStar(require([32m"tls"[0m));
+  [90m   |[0m                          [31m[1m^^^^^^^^^^^^^^[0m
+  [90m32 |[0m [36mconst[0m assert_1 = __importDefault(require([32m"assert"[0m));
+  [90m33 |[0m [36mconst[0m debug_1 = __importDefault(require([32m"debug"[0m));
+  [90m34 |[0m [36mconst[0m agent_base_1 = require([32m"agent-base"[0m);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./node_modules/https-proxy-agent/dist/index.js [Client Component Browser]
+    ./node_modules/gcp-metadata/node_modules/gaxios/build/cjs/src/gaxios.js [Client Component Browser]
+    ./node_modules/gcp-metadata/node_modules/gaxios/build/cjs/src/index.js [Client Component Browser]
+    ./node_modules/gcp-metadata/build/src/index.js [Client Component Browser]
+    ./node_modules/mongodb/lib/deps.js [Client Component Browser]
+    ./node_modules/mongodb/lib/cmap/auth/gssapi.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  externals-tracing:
+    ./node_modules/https-proxy-agent/dist/index.js [externals-tracing]
+    ./node_modules/gcp-metadata/node_modules/gaxios/build/cjs/src/gaxios.js [externals-tracing]
+    ./node_modules/gcp-metadata/node_modules/gaxios/build/cjs/src/index.js [externals-tracing]
+    ./node_modules/gcp-metadata/build/src/index.js [externals-tracing]
+    ./node_modules/mongodb/lib/deps.js [externals-tracing]
+    ./node_modules/mongodb/lib/cmap/auth/gssapi.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/mongodb/lib/client-side-encryption/state_machine.js:7:13
+Error: Module not found: Can't resolve 'tls'
+  [90m 5 |[0m [36mconst[0m net = require([32m"net"[0m);
+  [90m 6 |[0m [36mconst[0m process = require([32m"process"[0m);
+[31m[1m>[0m [90m 7 |[0m [36mconst[0m tls = require([32m"tls"[0m);
+  [90m   |[0m             [31m[1m^^^^^^^^^^^^^^[0m
+  [90m 8 |[0m [36mconst[0m bson_1 = require([32m"../bson"[0m);
+  [90m 9 |[0m [36mconst[0m abstract_cursor_1 = require([32m"../cursor/abstract_cursor"[0m);
+  [90m10 |[0m [36mconst[0m deps_1 = require([32m"../deps"[0m);
+
+
+
+Import traces:
+  #1 [externals-tracing]:
+    ./node_modules/mongodb/lib/client-side-encryption/state_machine.js
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #2 [Client Component Browser]:
+    ./node_modules/mongodb/lib/client-side-encryption/state_machine.js [Client Component Browser]
+    ./node_modules/mongodb/lib/client-side-encryption/auto_encrypter.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/categories.repo.ts [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Client Component Browser]
+    ./src/app/admin/categories/page.tsx [Server Component]
+
+  #3 [externals-tracing]:
+    ./node_modules/mongodb/lib/client-side-encryption/state_machine.js [externals-tracing]
+    ./node_modules/mongodb/lib/client-side-encryption/auto_encrypter.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/mongodb/lib/cmap/connect.js:10:13
+Error: Module not found: Can't resolve 'tls'
+  [90m 8 |[0m exports.makeSocket = makeSocket;
+  [90m 9 |[0m [36mconst[0m net = require([32m"net"[0m);
+[31m[1m>[0m [90m10 |[0m [36mconst[0m tls = require([32m"tls"[0m);
+  [90m   |[0m             [31m[1m^^^^^^^^^^^^^^[0m
+  [90m11 |[0m [36mconst[0m constants_1 = require([32m"../constants"[0m);
+  [90m12 |[0m [36mconst[0m deps_1 = require([32m"../deps"[0m);
+  [90m13 |[0m [36mconst[0m error_1 = require([32m"../error"[0m);
+
+
+
+Import traces:
+  #1 [externals-tracing]:
+    ./node_modules/mongodb/lib/cmap/connect.js
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #2 [externals-tracing]:
+    ./node_modules/mongodb/lib/cmap/connect.js [externals-tracing]
+    ./node_modules/mongodb/lib/sdam/monitor.js [externals-tracing]
+    ./node_modules/mongodb/lib/connection_string.js [externals-tracing]
+    ./node_modules/mongodb/lib/mongo_client.js [externals-tracing]
+    ./node_modules/mongodb/lib/index.js [externals-tracing]
+    [externals]/mongodb [external]
+    ./src/lib/mongodb/repos/songs.repo.ts [Server Component]
+    ./src/app/admin/songs/page.tsx [Server Component]
+
+  #3 [Client Component Browser]:
+    ./node_modules/mongodb/lib/cmap/connect.js [Client Component Browser]
+    ./node_modules/mongodb/lib/sdam/monitor.js [Client Component Browser]
+    ./node_modules/mongodb/lib/connection_string.js [Client Component Browser]
+    ./node_modules/mongodb/lib/mongo_client.js [Client Component Browser]
+    ./node_modules/mongodb/lib/index.js [Client Component Browser]
+    ./src/lib/mongodb/repos/songs.repo.ts [Client Component Browser]
+    ./src/hooks/use-firestore-songs.ts [Client Component Browser]
+    ./src/app/(member)/songs/page.tsx [Client Component Browser]
+    ./src/app/(member)/songs/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (./src/app/admin/songs/add/page.tsx:234:7)
+    at <unknown> (./src/lib/mongodb.ts:1:1)
+    at <unknown> (./src/lib/mongodb/repos/categories.repo.ts:1:1)
+    at <unknown> (./src/lib/mongodb/repos/songs.repo.ts:1:1)
+    at <unknown> (./src/app/admin/songs/add/page.tsx:130:9)
+    at <unknown> (./src/app/admin/songs/add/page.tsx:146:29)
+    at <unknown> (./src/app/admin/songs/add/page.tsx:160:9)
+    at <unknown> (./src/lib/mongodb.ts:1:1)
+    at <unknown> (./src/lib/mongodb/repos/categories.repo.ts:1:1)
+    at <unknown> (./src/lib/mongodb/repos/songs.repo.ts:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)

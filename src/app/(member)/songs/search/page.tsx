@@ -1,18 +1,34 @@
-"use client";
-
-import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { IconButton } from "@/components/ui/icon-button";
 import { SearchInput } from "@/components/ui/search-input";
 import { SongCard } from "@/components/songs/song-card";
-import { songsService } from "@/services/songs.service";
+import { listPublishedSongs } from "@/lib/mongodb/repos/songs.repo";
 
-const recentSearches = ["Kyrie", "Communion", "Tenor 1"];
+export default async function SearchSongsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ query?: string }>;
+}) {
+  const { query } = await searchParams;
+  const term = (query ?? "").trim().toLowerCase();
 
-export default function SearchSongsPage() {
-  const [query, setQuery] = useState("");
-  const results = useMemo(() => songsService.search(query), [query]);
+  const { items: allSongs } = await listPublishedSongs(50);
+
+  const results = term
+    ? allSongs.filter((song) =>
+        [
+          song.title,
+          song.composer,
+          song.category,
+          song.subCategory ?? "",
+          ...song.parts.map((part) => part.displayName),
+        ]
+          .join(" ")
+          .toLowerCase()
+          .includes(term),
+      )
+    : allSongs;
 
   return (
     <div className="space-y-5">
@@ -27,17 +43,9 @@ export default function SearchSongsPage() {
           <h1 className="text-2xl font-black text-slate-950">Search songs</h1>
         </div>
       </header>
-      <SearchInput autoFocus placeholder="Search title, category, part" value={query} onChange={(event) => setQuery(event.target.value)} />
-      <section>
-        <h2 className="mb-3 text-sm font-black uppercase tracking-wide text-slate-500">Recent searches</h2>
-        <div className="flex flex-wrap gap-2">
-          {recentSearches.map((term) => (
-            <button key={term} onClick={() => setQuery(term)} className="rounded-full bg-white px-4 py-2 text-sm font-bold text-slate-600 shadow-sm">
-              {term}
-            </button>
-          ))}
-        </div>
-      </section>
+      <form action="" method="get">
+        <SearchInput name="query" defaultValue={query ?? ""} autoFocus placeholder="Search title, category, part" />
+      </form>
       <section className="space-y-3">
         {results.map((song) => <SongCard key={song.id} song={song} />)}
       </section>

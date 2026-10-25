@@ -7,14 +7,6 @@ export function useAuth() {
   return useSyncExternalStore(authService.subscribe, authService.getState, authService.getServerState);
 }
 
-export function useAuthActions() {
-  return {
-    async googleSignIn() {
-      await authService.googleSignIn();
-    },
-  };
-}
-
 const subscribeNoop = () => () => undefined;
 
 export function usePendingAuthEmail() {

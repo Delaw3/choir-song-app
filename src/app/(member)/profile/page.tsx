@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Bell, ChevronRight, LogOut, MessageSquareText, Settings, Shield } from "lucide-react";
 import { authService } from "@/services/auth.service";
 import { usersService } from "@/services/users.service";
+import { useCurrentMember } from "@/hooks/use-current-member";
 
 const links = [
   { label: "Account settings", icon: Settings },
@@ -17,7 +18,7 @@ const links = [
 
 export default function ProfilePage() {
   const router = useRouter();
-  const member = usersService.getCurrentMember();
+  const member = useCurrentMember() ?? usersService.getCurrentMember();
   const [signingOut, setSigningOut] = useState(false);
 
   async function signOut() {

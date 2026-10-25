@@ -1,33 +1,42 @@
-"use client";
-
-import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
 import { IconButton } from "@/components/ui/icon-button";
 import { SongCard } from "@/components/songs/song-card";
-import { songsService } from "@/services/songs.service";
-import type { PracticeStatus, SongCategory } from "@/types/song";
+import { listPublishedSongs } from "@/lib/mongodb/repos/songs.repo";
+import { listActiveCategories } from "@/lib/mongodb/repos/categories.repo";
+import type { Song } from "@/types/song";
 
-const categories: Array<SongCategory | "All"> = ["All", "Mass", "Communion", "Anthems"];
-const voiceParts = ["S1", "S2", "A", "T1", "T2", "B"];
-const statuses: Array<PracticeStatus | "Any"> = ["Any", "not-started", "in-progress", "completed"];
+export default async function FilterSongsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string; subCategory?: string }>;
+}) {
+  const { category: categoryParam, subCategory: subCategoryParam } =
+    await searchParams;
+  const category = categoryParam ?? "All";
+  const subCategory = subCategoryParam ?? "All";
 
-export default function FilterSongsPage() {
-  const [category, setCategory] = useState<SongCategory | "All">("All");
-  const [selectedParts, setSelectedParts] = useState<string[]>([]);
-  const [status, setStatus] = useState<PracticeStatus | "Any">("Any");
-  const [creditCost, setCreditCost] = useState<number | "Any">("Any");
-  const results = useMemo(() => songsService.filter({ category, voiceParts: selectedParts, practiceStatus: status, creditCost }), [category, selectedParts, status, creditCost]);
+  const [{ items: allSongs }, activeCategories] = await Promise.all([
+    listPublishedSongs(50),
+    listActiveCategories(),
+  ]);
 
-  const togglePart = (part: string) => setSelectedParts((parts) => (parts.includes(part) ? parts.filter((item) => item !== part) : [...parts, part]));
-  const reset = () => {
-    setCategory("All");
-    setSelectedParts([]);
-    setStatus("Any");
-    setCreditCost("Any");
-  };
+  const categories = ["All", ...activeCategories.map((c) => c.name)];
+  const selectedCatDoc = activeCategories.find(
+    (c) => c.name.toLowerCase() === category.toLowerCase(),
+  );
+  const availableSubCategories =
+    selectedCatDoc?.subCategories && selectedCatDoc.subCategories.length > 0
+      ? ["All", ...selectedCatDoc.subCategories]
+      : [];
+
+  const results: Song[] = allSongs.filter((song) => {
+    if (category !== "All" && song.category !== category) return false;
+    if (subCategory !== "All" && song.subCategory !== subCategory) return false;
+    return true;
+  });
 
   return (
     <div className="space-y-5">
@@ -43,30 +52,50 @@ export default function FilterSongsPage() {
         </div>
       </header>
 
-      <FilterGroup title="Category">{categories.map((item) => <button key={item} onClick={() => setCategory(item)}><Chip active={category === item}>{item}</Chip></button>)}</FilterGroup>
-      <FilterGroup title="Voice parts">{voiceParts.map((part) => <button key={part} onClick={() => togglePart(part)}><Chip active={selectedParts.includes(part)}>{part}</Chip></button>)}</FilterGroup>
-      <FilterGroup title="Practice status">{statuses.map((item) => <button key={item} onClick={() => setStatus(item)}><Chip active={status === item}>{item.replaceAll("-", " ")}</Chip></button>)}</FilterGroup>
-      <FilterGroup title="Credit cost">
-        {["Any", 1, 2, 3, 4].map((item) => <button key={item} onClick={() => setCreditCost(item as number | "Any")}><Chip active={creditCost === item}>{item === "Any" ? "Any credit cost" : `Up to ${item}`}</Chip></button>)}
-      </FilterGroup>
+      <section className="rounded-3xl bg-white p-4 shadow-sm">
+        <h2 className="mb-3 text-sm font-black text-slate-950">Category</h2>
+        <div className="flex flex-wrap gap-2">
+          {categories.map((item) => (
+            <Link
+              key={item}
+              href={`/songs/filters?category=${item}&subCategory=All`}
+              className="shrink-0"
+            >
+              <Chip active={category === item}>{item}</Chip>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {availableSubCategories.length > 0 && (
+        <section className="rounded-3xl bg-white p-4 shadow-sm mt-3">
+          <h2 className="mb-3 text-sm font-black text-slate-950">{category} sub-category</h2>
+          <div className="flex flex-wrap gap-2">
+            {availableSubCategories.map((item) => (
+              <Link
+                key={item}
+                href={`/songs/filters?category=${category}&subCategory=${item}`}
+                className="shrink-0"
+              >
+                <Chip active={subCategory === item}>{item}</Chip>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       <div className="grid grid-cols-2 gap-3">
-        <Button variant="secondary" onClick={reset}>Reset</Button>
-        <Link href="/songs" className="block"><Button className="w-full">Apply filters</Button></Link>
+        <Link href="/songs">
+          <Button variant="secondary">Reset</Button>
+        </Link>
+        <Link href="/songs" className="block">
+          <Button className="w-full">Apply filters</Button>
+        </Link>
       </div>
 
       <section className="space-y-3">
         {results.map((song) => <SongCard key={song.id} song={song} compact />)}
       </section>
     </div>
-  );
-}
-
-function FilterGroup({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <section className="rounded-3xl bg-white p-4 shadow-sm">
-      <h2 className="mb-3 text-sm font-black text-slate-950">{title}</h2>
-      <div className="flex flex-wrap gap-2">{children}</div>
-    </section>
   );
 }

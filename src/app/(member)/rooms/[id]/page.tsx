@@ -89,7 +89,7 @@ export default function RoomDetailPage() {
       {showMembers ? (
         <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center" role="dialog" aria-modal="true" aria-label={`${room.name} members`}>
           <button type="button" aria-label="Close members" onClick={() => setShowMembers(false)} className="absolute inset-0 bg-slate-950/50" />
-          <div className="relative max-h-[85dvh] w-full max-w-md overflow-y-auto rounded-t-[2rem] bg-white p-5 pb-[calc(env(safe-area-inset-bottom)+1.25rem)] shadow-2xl sm:rounded-[2rem]">
+          <div className="relative max-h-[85dvh] w-full max-w-md overflow-y-auto rounded-t-4xl bg-white p-5 pb-[calc(env(safe-area-inset-bottom)+1.25rem)] shadow-2xl sm:rounded-4xl">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="flex items-center gap-2 text-base font-bold text-slate-950"><Users className="size-4" />Members ({room.members.length})</h2>
               <button

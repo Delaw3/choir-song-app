@@ -4,7 +4,7 @@ import { useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { LoadingState } from "@/components/ui/loading-state";
 import { useAuth } from "@/hooks/use-auth";
-import type { UserRole } from "@/lib/firestore/types";
+import type { UserRole } from "@/lib/mongodb/types";
 
 export function AuthBoundary({ role, children }: { role: UserRole | Array<UserRole>; children: ReactNode }) {
   const router = useRouter();

@@ -5,20 +5,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Check, LoaderCircle } from "lucide-react";
 import { AuthError } from "@/components/auth/auth-feedback";
-import { AuthHeader } from "@/components/auth/auth-header";
 import { PasswordInput } from "@/components/auth/password-input";
 import { SocialLoginButton } from "@/components/auth/social-login-button";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { authService, MockAuthError } from "@/services/auth.service";
 import { cn } from "@/lib/utils";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function FieldError({ id, message }: { id: string; message?: string }) {
-  if (!message) return null;
-  return <p id={id} className="mt-1.5 text-xs font-medium text-rose-600">{message}</p>;
-}
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -36,7 +28,7 @@ export default function SignUpPage() {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const nextErrors: typeof errors = {};
-    if (values.name.trim().length < 2) nextErrors.name = "Enter your name.";
+    if (values.name.trim().length < 2) nextErrors.name = "Enter your full name.";
     if (!emailPattern.test(values.email.trim())) nextErrors.email = "Enter a valid email.";
     if (values.password.length < 8) nextErrors.password = "Use at least 8 characters.";
     setErrors(nextErrors);
@@ -56,33 +48,118 @@ export default function SignUpPage() {
   const ready = Boolean(values.name.trim() && values.email.trim() && passwordOk);
 
   return (
-    <div className="flex flex-1 flex-col">
-      <AuthHeader title="Create your account" description="One account for practice, library, and credits." />
-      <SocialLoginButton />
-      <div className="my-5 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400"><span className="h-px flex-1 bg-slate-200" />or<span className="h-px flex-1 bg-slate-200" /></div>
-      <form onSubmit={submit} className="space-y-4" noValidate>
-        {authError ? <AuthError>{authError}</AuthError> : null}
-        <div>
-          <label className="sr-only" htmlFor="full-name">Name</label>
-          <Input id="full-name" autoComplete="name" value={values.name} onChange={(event) => update("name", event.target.value)} aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? "full-name-error" : undefined} placeholder="Full name" />
-          <FieldError id="full-name-error" message={errors.name} />
+    <div className="w-full">
+      {/* Centered Minimal Header */}
+      <div className="mb-7 text-center">
+        <h1 className="text-2xl font-black tracking-tight text-slate-950 sm:text-3xl">Create account</h1>
+        <p className="mt-1.5 text-sm text-slate-500">Sign up for choir practice & repertoire</p>
+      </div>
+
+      <div className="space-y-4">
+        {/* Centered Social Sign Up */}
+        <SocialLoginButton label="Sign up with Google" />
+
+        {/* Clean Centered Divider */}
+        <div className="relative my-4 flex items-center justify-center">
+          <div className="w-full border-t border-slate-200" />
+          <span className="absolute bg-white px-3 text-xs font-medium text-slate-400">or</span>
         </div>
-        <div>
-          <label className="sr-only" htmlFor="sign-up-email">Email</label>
-          <Input id="sign-up-email" type="email" autoComplete="email" value={values.email} onChange={(event) => update("email", event.target.value)} aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "sign-up-email-error" : undefined} placeholder="Email" />
-          <FieldError id="sign-up-email-error" message={errors.email} />
-        </div>
-        <div>
-          <PasswordInput id="sign-up-password" label="Password" labelClassName="sr-only" autoComplete="new-password" value={values.password} onChange={(event) => update("password", event.target.value)} error={errors.password} placeholder="Password (8+ characters)" />
-          {!errors.password ? (
-            <p className={cn("mt-1.5 flex items-center gap-1.5 text-xs", passwordOk ? "font-medium text-emerald-600" : "text-slate-400")}>
-              <Check className="size-3.5" />8+ characters
-            </p>
-          ) : null}
-        </div>
-        <Button type="submit" size="lg" className="w-full" disabled={loading || !ready}>{loading ? <><LoaderCircle className="size-5 animate-spin" />Creating…</> : "Create account"}</Button>
-      </form>
-      <p className="mt-6 text-center text-sm text-slate-500">Have an account? <Link href="/sign-in" className="font-semibold text-violet-700">Sign in</Link></p>
+
+        {/* Sign Up Form */}
+        <form onSubmit={submit} className="space-y-4" noValidate>
+          {authError ? <AuthError>{authError}</AuthError> : null}
+
+          <div>
+            <label className="mb-1.5 block text-xs font-bold text-slate-700" htmlFor="full-name">
+              Full Name
+            </label>
+            <input
+              id="full-name"
+              name="name"
+              type="text"
+              autoComplete="name"
+              value={values.name}
+              onChange={(e) => update("name", e.target.value)}
+              placeholder="e.g. Amara Okafor"
+              aria-invalid={Boolean(errors.name)}
+              aria-describedby={errors.name ? "full-name-error" : undefined}
+              className={cn(
+                "min-h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-600 focus:ring-4 focus:ring-violet-500/10",
+                errors.name && "border-rose-400 bg-rose-50/20 focus:border-rose-500",
+              )}
+            />
+            {errors.name ? <p id="full-name-error" className="mt-1.5 text-xs font-semibold text-rose-600">{errors.name}</p> : null}
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-xs font-bold text-slate-700" htmlFor="sign-up-email">
+              Email
+            </label>
+            <input
+              id="sign-up-email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              value={values.email}
+              onChange={(e) => update("email", e.target.value)}
+              placeholder="you@example.com"
+              aria-invalid={Boolean(errors.email)}
+              aria-describedby={errors.email ? "sign-up-email-error" : undefined}
+              className={cn(
+                "min-h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-600 focus:ring-4 focus:ring-violet-500/10",
+                errors.email && "border-rose-400 bg-rose-50/20 focus:border-rose-500",
+              )}
+            />
+            {errors.email ? <p id="sign-up-email-error" className="mt-1.5 text-xs font-semibold text-rose-600">{errors.email}</p> : null}
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-xs font-bold text-slate-700" htmlFor="sign-up-password">
+              Password
+            </label>
+            <PasswordInput
+              id="sign-up-password"
+              name="password"
+              label="Password"
+              labelClassName="sr-only"
+              autoComplete="new-password"
+              value={values.password}
+              onChange={(e) => update("password", e.target.value)}
+              error={errors.password}
+              placeholder="At least 8 characters"
+            />
+            {!errors.password ? (
+              <p className={cn("mt-1.5 flex items-center gap-1.5 text-xs transition-colors", passwordOk ? "font-semibold text-emerald-600" : "text-slate-400")}>
+                <Check className={cn("size-3.5", passwordOk ? "text-emerald-500" : "text-slate-300")} />
+                Must be at least 8 characters
+              </p>
+            ) : null}
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading || !ready}
+            className="flex min-h-12 w-full items-center justify-center rounded-2xl bg-violet-700 px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-violet-800 active:scale-[0.99] disabled:pointer-events-none disabled:opacity-50"
+          >
+            {loading ? (
+              <>
+                <LoaderCircle className="size-4 animate-spin mr-2" />
+                <span>Creating account…</span>
+              </>
+            ) : (
+              "Create account"
+            )}
+          </button>
+        </form>
+
+        {/* Centered Switch Link */}
+        <p className="pt-2 text-center text-sm text-slate-500">
+          Already have an account?{" "}
+          <Link href="/sign-in" className="font-bold text-violet-700 hover:underline">
+            Sign in
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

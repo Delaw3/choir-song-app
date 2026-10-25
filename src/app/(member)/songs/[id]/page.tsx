@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { CreditBadge } from "@/components/ui/credit-badge";
 import { IconButton } from "@/components/ui/icon-button";
 import { VoicePartChip } from "@/components/songs/voice-part-chip";
-import { songsService } from "@/services/songs.service";
+import { getSongById } from "@/lib/mongodb/repos/songs.repo";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -13,7 +13,7 @@ type Props = {
 
 export default async function SongDetailsPage({ params }: Props) {
   const { id } = await params;
-  const song = songsService.getById(id);
+  const song = await getSongById(id);
   if (!song) notFound();
   const firstPart = song.parts[0];
 

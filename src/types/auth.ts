@@ -1,8 +1,8 @@
-import type { UserRole } from "@/lib/firestore/types";
+import type { UserRole } from "@/lib/mongodb/types";
 
 /**
- * Frontend-facing auth user. Mirrors the shape of the Firebase User for the
- * browser session; the server resolves these to Firestore `users/{id}` docs
+ * Frontend-facing auth user. Mirrors the shape of the auth session for the
+ * browser session; the server resolves these to MongoDB `users/{id}` docs
  * (extended with role + emailVerified + displayName).
  */
 export interface AuthUser {
@@ -11,6 +11,7 @@ export interface AuthUser {
   email: string;
   role: UserRole;
   emailVerified: boolean;
+  creditBalance?: number;
 }
 
 /**
@@ -37,65 +38,23 @@ export interface SignUpInput {
 }
 
 /**
- * Errors the client can read out of the Firebase Auth SDK.
- * `FirebaseAuthError.isBlocking()` distinguishes recoverable (transient /
- * user-repairable) failures from ones that keep the user locked out.
+ * Generic auth error used by the mock auth service. Firebase Auth has been
+ * removed from this app; this replaces the former FirebaseAuthError.
  */
-export class FirebaseAuthError extends Error {
-  constructor(
-    public readonly code: string,
-    public readonly message: string,
-    public readonly credentialId?: string,
-  ) {
-    super(message);
-    this.name = "FirebaseAuthError";
+export class AuthError extends Error {
+  constructor(public readonly code: string, message?: string) {
+    super(message ?? code);
+    this.name = "AuthError";
   }
 
   /** True for failures the client can attempt to self-repair. */
   isBlocking(): boolean {
     return (
-      this.code === "auth/email-already-in-use" ||
-      this.code === "auth/invalid-credential" ||
-      this.code === "auth/user-disabled" ||
-      this.code === "auth/user-not-found" ||
-      this.code === "auth/wrong-password"
+      this.code === "EMAIL_IN_USE" ||
+      this.code === "INVALID_CREDENTIALS" ||
+      this.code === "USER_DISABLED" ||
+      this.code === "USER_NOT_FOUND" ||
+      this.code === "WRONG_PASSWORD"
     );
   }
-
-  static isFirebaseError(error: unknown): error is FirebaseAuthError {
-    return (
-      typeof error === "object" &&
-      error !== null &&
-      "code" in error &&
-      "message" in error
-    );
-  }
-
-  static fromUnknown(error: unknown): FirebaseAuthError {
-    if (this.isFirebaseError(error)) {
-      return new FirebaseAuthError(
-        String(error.code),
-        String(error.message),
-        "credentialId" in error ? String(error.credentialId) : undefined,
-      );
-    }
-    return new FirebaseAuthError(
-      "auth/unidentified-user",
-      error instanceof Error ? error.message : String(error),
-    );
-  }
-}
-
-/**
- * Identity that arrives from Firebase Auth (signInWithPopup/Google) before the
- * backend resolves the user. NOTE: `emailVerified` from the IdP is *not* a
- * substitute for the app's own email verification step.
- */
-export interface RawGoogleUser {
-  uid: string;
-  displayName: string | null;
-  email: string;
-  emailVerified: boolean;
-  /** Provided by `GoogleAuthProvider.getToken()`; stores in-session. */
-  accessToken: string;
 }
